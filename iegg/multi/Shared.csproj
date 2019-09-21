@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7878ABD5-2933-4D29-A055-C87F8FB91EB4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>multi</RootNamespace>
+    <AssemblyName>multi</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="GameUtility\Controll\KeyStroke\BiStableKey.cs" />
+    <Compile Include="GameUtility\Controll\KeyStroke\IKeyStroke.cs" />
+    <Compile Include="GameUtility\Controll\ReverseIceControll.cs" />
+    <Compile Include="GameUtility\Map\Elements\FloorType\IFloor.cs" />
+    <Compile Include="GameUtility\Map\Elements\FloorType\RegularIce.cs" />
+    <Compile Include="GameUtility\Physic\Circle.cs" />
+    <Compile Include="GameUtility\Physic\Line.cs" />
+    <Compile Include="GameUtility\Physic\Point.cs" />
+    <Compile Include="GameUtility\Physic\Polygon.cs" />
+    <Compile Include="GameUtility\Menu\Editor\ObjectInspector.cs" />
+    <Compile Include="GameUtility\Menu\Editor\Windows\AddNewMapElementWindow.cs" />
+    <Compile Include="GameUtility\Menu\Editor\Windows\Special\GunInspector.cs" />
+    <Compile Include="WorkingGame.cs" />
+    <Compile Include="Editor.cs" />
+    <Compile Include="GameUtility\Camera\BaseCamera.cs" />
+    <Compile Include="GameUtility\Camera\BasicCamera.cs" />
+    <Compile Include="GameUtility\Camera\Director.cs" />
+    <Compile Include="GameUtility\Camera\ICamera.cs" />
+    <Compile Include="GameUtility\ContentContainer.cs" />
+    <Compile Include="GameUtility\Controll\IControll.cs" />
+    <Compile Include="GameUtility\Controll\NormalControll.cs" />
+    <Compile Include="GameUtility\AdditionalMath\MyMath.cs" />
+    <Compile Include="GameUtility\Map\Elements\Enemies\Guns\Bullet.cs" />
+    <Compile Include="GameUtility\Map\Elements\ILayer.cs" />
+    <Compile Include="GameUtility\Map\Elements\Layer.cs" />
+    <Compile Include="GameUtility\Map\Elements\SheetInfo\Sheet.cs" />
+    <Compile Include="GameUtility\Map\Elements\SheetInfo\TileElement.cs" />
+    <Compile Include="GameUtility\Map\Elements\Enemies\Guns\Gun.cs" />
+    <Compile Include="GameUtility\Map\VertexPosTexNormal.cs" />
+    <Compile Include="GameUtility\Map\Elements\FinishPoint.cs" />
+    <Compile Include="GameUtility\Map\Elements\IMapElement.cs" />
+    <Compile Include="GameUtility\Map\Elements\SpawnPoint.cs" />
+    <Compile Include="GameUtility\Map\Map.cs" />
+    <Compile Include="GameUtility\Map\PlaneControll.cs" />
+    <Compile Include="GameUtility\Physic\ICollider.cs" />
+    <Compile Include="GameUtility\PlayerPosition.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Aether.Animation">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Animation.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Atlas">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Atlas.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Content.Pipeline.AnimationImporters">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Content.Pipeline.AnimationImporters.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Content.Pipeline.AtlasImporter">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Content.Pipeline.AtlasImporter.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Content.Pipeline.DDSImporter">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Content.Pipeline.DDSImporter.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Content.Pipeline.GraphicsImporters">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Content.Pipeline.GraphicsImporters.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Content.Pipeline.RawModelProcessor">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Content.Pipeline.RawModelProcessor.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Graphics">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Shaders.Deferred">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Shaders.Deferred.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Shaders.FXAA">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Shaders.FXAA.dll</HintPath>
+    </Reference>
+    <Reference Include="Aether.Shaders.InfiniteGrid">
+      <HintPath>C:\Users\gregor\Downloads\Aether.Extras-master\bin\Release\Windows\Aether.Shaders.InfiniteGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Myra, Version=0.8.7.167, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Myra.0.8.7.167\lib\net45\Myra.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\character.png" />
+    <Content Include="Content\ChickenNorm.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Effect\effect.fx" />
+    <Content Include="Content\Maps\DefaultIce.png" />
+    <Content Include="Content\Maps\DefaultTexture.jpg" />
+    <Content Include="Content\Maps\Snow.png" />
+    <Content Include="Content\pointer.png" />
+    <Content Include="Content\snow.png" />
+    <Content Include="Content\UV-Texture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </MonoGameContentReference>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="Content\chickenV2.fbx" />
+    <None Include="Content\dude.fbx" />
+    <None Include="Content\dude_GPU.fbx" />
+    <None Include="Content\Enemy\bullet.fbx" />
+    <None Include="Content\File.spritefont">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Enemy\gun.fbx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\head.tga" />
+    <None Include="Content\headN.tga" />
+    <None Include="Content\headS.tga" />
+    <None Include="Content\jacket.tga" />
+    <None Include="Content\jacketN.tga" />
+    <None Include="Content\jacketS.tga" />
+    <None Include="Content\MapElements\DefaultGround.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\MapElements\RegularIceSheet.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\ObjectList.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\pants.tga" />
+    <None Include="Content\pantsN.tga" />
+    <None Include="Content\pantsS.tga" />
+    <None Include="Content\TextureList.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\robot.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\robottexture_0.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\untitled.fbx" />
+    <None Include="Content\upBodyC.tga" />
+    <None Include="Content\upbodyN.tga" />
+    <None Include="Content\upBodyS.tga" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\NpcModels\" />
+    <Folder Include="GameUtility\AdditionalMath\Interpolate\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

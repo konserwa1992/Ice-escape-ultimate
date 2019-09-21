@@ -1,0 +1,140 @@
+﻿using Myra.Graphics2D.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Myra;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using multi.GameUtility.Map.Elements;
+using multi.GameUtility.Menu.Editor.Windows;
+using multi.GameUtility.Menu.Editor.Windows.Special;
+using multi.GameUtility.Map.Elements.Enemies.Guns;
+using multi.GameUtility.Map.Elements.FloorType;
+
+namespace multi.GameUtility.Menu.Editor
+{
+    /// <summary>
+    /// Lib is fine, just this code is trash.
+    /// when you grow up your heart die
+    /// </summary>
+    class ObjectInspector
+    {
+        public Desktop Desktop;
+        public string selectedID { get; private set; }
+        private Window inspectorWindow;
+
+        public ObjectInspector(multi.Editor editor)
+        {
+            MyraEnvironment.Game = editor;
+            MyraEnvironment.DrawWidgetsFrames = true;
+            Desktop = new Desktop();
+           
+
+            inspectorWindow = new Window()
+            {
+                Id="wObjectInspector",
+                Width = 200,
+               Height = 600
+            };
+
+            Panel grid = new Panel()
+            {
+                Id= "GridAddElement",
+                Width = 200,
+                Height = 600
+            };
+
+
+            Button bAddNewEnemy = new Button()
+            {
+                Id = "bNewEnemy",
+                Width = 200, Top = 30,Text= "AddEnemy"
+            };
+
+            ListBox lObjectList = new ListBox()
+            {
+                Id = "lObjectList",
+                Width = 200,
+                Top = 60
+            };
+
+            lObjectList.SelectedIndexChanged += new EventHandler(delegate (object sender, EventArgs args)
+            {
+                selectedID = lObjectList.SelectedItem.Id;
+                IMapElement MapElement = ((multi.Editor)MyraEnvironment.Game).Map.GetMapElementByName<IMapElement>(selectedID);
+                if (MapElement != null)
+                {
+                    if (typeof(Gun) == MapElement.GetType())
+                        Desktop.Widgets.Add(new GunInspector(MapElement));
+                }
+                else
+                {
+                    IFloor NewFloorElement =
+                        ((multi.Editor) MyraEnvironment.Game).Map.GetMapElementByName<IFloor>(selectedID);
+
+                }
+            });
+
+
+            bAddNewEnemy.Click += new EventHandler(delegate(object sender,EventArgs args)
+            { 
+                Desktop.Widgets.Add(new AddNewMapElementWindow(this));
+            });
+
+
+
+            grid.Widgets.Add(lObjectList);
+            grid.Widgets.Add(bAddNewEnemy);
+            grid.Widgets.Add(lObjectList);
+            inspectorWindow.Content = grid;
+            Desktop.Widgets.Add(inspectorWindow);
+        }
+
+
+
+        public void Draw()
+        {
+            List<IMapElement> mapElementRefference = ((multi.Editor)MyraEnvironment.Game).Map.MapElements;
+            List<IFloor> mapFloorTypeRefference = ((multi.Editor)MyraEnvironment.Game).Map.MapPath;
+            Desktop.Bounds = new Rectangle(0, 0, MyraEnvironment.Game.GraphicsDevice.PresentationParameters.BackBufferWidth,
+             MyraEnvironment.Game.GraphicsDevice.PresentationParameters.BackBufferHeight);
+
+     //       ((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.Clear();
+            if (mapElementRefference != null)
+            {
+            //    ((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.Clear();
+                foreach (IMapElement element in mapElementRefference)
+                {
+                    if (((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.FirstOrDefault(x => x.Id == element.Key) == null)
+                    {
+                        ((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.Add(new ListItem()
+                        {
+                            Id = element.Key,
+                            Text = element.Key
+                        });
+                    }
+                }
+            }
+            if (mapFloorTypeRefference != null)
+            {
+                //    ((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.Clear();
+                foreach (IFloor element in mapFloorTypeRefference)
+                {
+                    if (((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.FirstOrDefault(x => x.Id == element.Key) == null)
+                    {
+                        ((ListBox)inspectorWindow.Content.FindWidgetById("lObjectList")).Items.Add(new ListItem()
+                        {
+                            Id = element.Key,
+                            Text = element.Key
+                        });
+                    }
+                }
+            }
+
+
+            Desktop.Render();
+        }
+    }
+}

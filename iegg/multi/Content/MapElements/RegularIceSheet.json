@@ -1,0 +1,268 @@
+﻿{
+  "Name": "DefaultIce",
+  "TextureName": "DefaultIce",
+  "TileElementHeight": 64,
+  "TileElementWeight": 64,
+  "TileElements": [
+    {
+      "Groups": [
+        {
+          "Id": 100,
+          "Name": "Default",
+          "Positions": [
+            {
+              "X": 0,
+              "Y": 254
+            }
+          ],
+          "Pattern": [
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "Id": 1,
+          "Name": "IceTile1",
+          "Positions": [
+            {
+              "X": 0,
+              "Y": 128
+            }
+          ],
+          "Pattern": [
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "Id": 2,
+          "Name": "IceTile1",
+          "Positions": [
+            {
+              "X": 64,
+              "Y": 256
+            }
+          ],
+          "Pattern": [
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "Id": 3,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 0,
+              "Y": 192
+            }
+          ],
+          "Pattern": [
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Id": 4,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 128,
+              "Y": 256
+            }
+          ],
+          "Pattern": [
+            0,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 64,
+              "Y": 128
+            }
+          ],
+          "Pattern": [
+            1,
+            0,
+            0,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 128,
+              "Y": 192
+            }
+          ],
+          "Pattern": [
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 0,
+              "Y": 64
+            }
+          ],
+          "Pattern": [
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 128,
+              "Y": 128
+            }
+          ],
+          "Pattern": [
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 192,
+              "Y": 256
+            }
+          ],
+          "Pattern": [
+            0,
+            1,
+            0,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 192,
+              "Y": 192
+            }
+          ],
+          "Pattern": [
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 64,
+              "Y": 64
+            }
+          ],
+          "Pattern": [
+            1,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 64,
+              "Y": 192
+            }
+          ],
+          "Pattern": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 128,
+              "Y": 64
+            }
+          ],
+          "Pattern": [
+            1,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 192,
+              "Y": 128
+            }
+          ],
+          "Pattern": [
+            1,
+            1,
+            0,
+            1
+          ]
+        },
+        {
+          "Id": 5,
+          "Name": "IceTile2",
+          "Positions": [
+            {
+              "X": 192,
+              "Y": 64
+            }
+          ],
+          "Pattern": [
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}
