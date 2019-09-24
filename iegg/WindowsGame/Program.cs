@@ -1,9 +1,6 @@
-﻿#define WINDOWS
-using Engine;
-using System;
+﻿using System;
 
-
-namespace EditorEngine
+namespace WindowsGame
 {
 #if WINDOWS || LINUX
     /// <summary>
@@ -17,7 +14,7 @@ namespace EditorEngine
         [STAThread]
         static void Main()
         {
-            using (var game = new Editor())
+            using (var game = new Game1())
                 game.Run();
         }
     }

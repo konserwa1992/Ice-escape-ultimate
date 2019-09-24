@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility
+namespace Engine.GameUtility
 {
-    class ContentContainer
+    public class ContentContainer
     {
         private static ContentContainer _instance = new ContentContainer();
 

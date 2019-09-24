@@ -1,14 +1,15 @@
-﻿using multi.GameUtility.Map.Elements;
-using multi.GameUtility.Menu.Editor.Windows.Special;
+﻿using Engine.GameUtility.Map.Elements;
+using Engine.GameUtility.Menu.Editor.Windows.Special;
 using Myra;
 using Myra.Graphics2D.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.GameUtility.Map;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Menu.Editor.Windows
+namespace EditorEngine.GameUtility.Menu.Editor
 {
     class AddNewMapElementWindow :Window
     {
@@ -47,36 +48,36 @@ namespace multi.GameUtility.Menu.Editor.Windows
 
             bSpawnObject.Click += new EventHandler(delegate (object sender, EventArgs args)
                 {
-                    Map.StandardElements objType = Map.StandardElements.Ignore;
+                    Engine.GameUtility.Map.StandardElements objType = Engine.GameUtility.Map.StandardElements.Ignore;
                     switch (cElementTypeList.SelectedItem.Text)
                     {
                         case "Gun":
                             {
-                                objType = Map.StandardElements.Gun;
+                                objType = Engine.GameUtility.Map.StandardElements.Gun;
                                 break;
                             }
                         case "Spawn":
                             {
-                                objType = Map.StandardElements.SpawnPiont;
+                                objType = Engine.GameUtility.Map.StandardElements.SpawnPiont;
                                 break;
                             }
                         case "Normal Ice":
                         {
-                            objType = Map.StandardElements.NormalIce;
+                            objType = Engine.GameUtility.Map.StandardElements.NormalIce;
                             break;
                         }
                         case "Reverse Ice":
                         {
-                            objType = Map.StandardElements.ReverseIce;
+                            objType = Engine.GameUtility.Map.StandardElements.ReverseIce;
                             break;
                         }
 
                     }
 
-                    if (objType != Map.StandardElements.Ignore)
+                    if (objType != Engine.GameUtility.Map.StandardElements.Ignore)
                     {
-                        List<IMapElement> mapElementRefference = ((multi.Editor)MyraEnvironment.Game).Map.MapElements;
-                        string result = ((multi.Editor)MyraEnvironment.Game).Map.AddElementOnMap(objType, tElementName.Text);
+                        List<IMapElement> mapElementRefference = ((EditorEngine.Editor)MyraEnvironment.Game).Map.MapElements;
+                        string result = ((EditorEngine.Editor)MyraEnvironment.Game).Map.AddElementOnMap(objType, tElementName.Text);
                         if (result != tElementName.Text)
                         {
                             var messageBox = Dialog.CreateMessageBox("Error", result);

@@ -1,0 +1,122 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using Lidgren.Network;
+using NETGame;
+
+
+namespace Server
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            UserSessionContainer UsersSessions = new UserSessionContainer();
+             var config = new NetPeerConfiguration("application name")
+            { Port = 12345 };
+            var server = new NetServer(config);
+            server.Start();
+     
+            // server
+
+            NetIncomingMessage msg;
+            while (true)
+            {
+                if ((msg = server.ReadMessage())==null) continue;
+
+
+                switch (msg.MessageType)
+                {
+                    case NetIncomingMessageType.ConnectionApproval:
+                        {
+                            Console.WriteLine("Connected");
+                            break;
+                        }
+                    case NetIncomingMessageType.VerboseDebugMessage:
+                    case NetIncomingMessageType.DebugMessage:
+                    case NetIncomingMessageType.WarningMessage:
+                    case NetIncomingMessageType.StatusChanged:
+                        {
+                            NetConnectionStatus status = (NetConnectionStatus)msg.ReadByte();
+                            break;
+                        }
+                    case NetIncomingMessageType.Data:
+                        {
+                            short opcode = msg.ReadInt16();
+                            if(opcode==2000)
+                            {
+                              
+                                unsafe
+                                {
+                                    UserSession session = new UserSession(0, msg.SenderConnection);
+                                    TypedReference tr = __makeref(session);
+                                    IntPtr ptr = **(IntPtr**)(&tr);
+                                    Console.WriteLine(ptr);
+                                    session.ID = ptr.ToInt32();
+                               
+
+                                    NetOutgoingMessage outMessage = session.Connection.Peer.CreateMessage();
+                                    outMessage.Write((short)2000);
+                                    outMessage.Write(session.ID);
+                                    session.Connection.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered, outMessage.LengthBytes);
+
+                                    foreach (UserSession otherPlayers in UsersSessions.Sessions)
+                                    {
+                                        NetOutgoingMessage informAboutPlayer = session.Connection.Peer.CreateMessage();
+                                        informAboutPlayer.Write((short)2620);
+                                        informAboutPlayer.Write(otherPlayers.ID, 32);
+                                        informAboutPlayer.Write("konserwa");
+                                        session.Connection.SendMessage(informAboutPlayer, NetDeliveryMethod.UnreliableSequenced, informAboutPlayer.LengthBytes);
+                                        Console.WriteLine($"Wysyłam pakiet od {session.ID} wysyłam dane o {otherPlayers.ID}");
+                                        //Console.WriteLine(BitConverter.ToString(informAboutPlayer.Data));
+
+
+                                        NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
+                                        SendToCurrentPlayerAboutPlayers.Write((short)2620);
+                                        SendToCurrentPlayerAboutPlayers.Write(session.ID, 32);
+                                        SendToCurrentPlayerAboutPlayers.Write("konserwa");
+                                        otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);
+                                        Console.WriteLine($"Wysyłam pakiet od {otherPlayers.ID} wysyłam dane o {session.ID}");
+                                      //  Console.WriteLine(BitConverter.ToString(SendToCurrentPlayerAboutPlayers.Data));
+                                    }
+
+                                    UsersSessions.Sessions.Add(session);
+                                }
+                            }
+                            else if (opcode == 6066)
+                            {
+                                MovePacket move = new MovePacket();
+                                msg.ReadAllProperties((object)move);
+
+                                foreach (UserSession otherPlayers in UsersSessions.Sessions)
+                                {
+                                    if(otherPlayers.ID != move.ID) { 
+                                    NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
+                                    SendToCurrentPlayerAboutPlayers.Write((short)6066);
+                                    SendToCurrentPlayerAboutPlayers.Write(move.ID);
+                                    SendToCurrentPlayerAboutPlayers.Write(move.X);
+                                    SendToCurrentPlayerAboutPlayers.Write(move.Y);
+                                    otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);}
+                                }
+                            }
+                            break;
+                        }
+                    case NetIncomingMessageType.ErrorMessage:
+                        Console.WriteLine(msg.ReadString());
+                        break;
+                    default:
+                        {
+                            Console.WriteLine("Unhandled type: " + msg.MessageType);
+                            break;
+                        }
+                }
+                //server.Recycle(msg);
+            }
+
+        }
+    }
+}

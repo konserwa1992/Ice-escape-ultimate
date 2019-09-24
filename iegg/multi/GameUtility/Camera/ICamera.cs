@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Camera
+namespace Engine.GameUtility.Camera
 {
-    interface ICamera
+    public interface ICamera
     {
         Vector3 Position { get; set; }
         Vector3 CameraTarget { get; set; }

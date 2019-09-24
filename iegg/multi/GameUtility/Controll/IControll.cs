@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace multi.GameUtility.Control
+namespace Engine.GameUtility.Control
 {
     public interface IControll
 	{

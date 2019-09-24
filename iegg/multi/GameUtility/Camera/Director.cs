@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Camera
+namespace Engine.GameUtility.Camera
 {
-    class Director
+    public class Director
     {
         private static Director _instance = new Director() ;
         public ICamera Camera { get; private set; } = new BasicCamera() ;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace multi
+namespace Engine
 {
 #if WINDOWS || LINUX
     /// <summary>
@@ -14,8 +14,8 @@ namespace multi
         [STAThread]
         static void Main()
         {
-            using (var game = new Editor())
-                game.Run();
+           /* using (var game = new Editor())
+                game.Run();*/
         }
     }
 #endif

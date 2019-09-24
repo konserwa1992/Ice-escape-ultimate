@@ -1,27 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Diagnostics;
-using multi.GameUtility;
-using multi.GameUtility.Camera;
-using multi.GameUtility.Map;
-using System.Linq;
-using multi.GameUtility.Map.Elements;
+using Engine.GameUtility;
+using Engine.GameUtility.Map;
+using Engine.GameUtility.Map.Elements;
 using System.IO;
-using Newtonsoft.Json;
-using multi.GameUtility.Map.Elements.Enemies.Guns;
-using Myra.Graphics2D.UI;
-using Myra;
-using multi.GameUtility.Menu.Editor;
 using tainicom.Aether.Animation;
-using multi.GameUtility.Physic;
-using multi.GameUtility.Controll.KeyStroke;
+using Engine.GameUtility.Physic;
+using Engine.GameUtility.Controll.KeyStroke;
 using System.Collections.Generic;
-using System.Runtime.Remoting;
-using multi.GameUtility.Map.Elements.FloorType;
+using Engine.GameUtility.Map.Elements.FloorType;
+using Engine.GameUtility.Menu.Editor;
+using Engine.GameUtility.Camera;
+using Newtonsoft.Json;
+using EditorEngine.GameUtility.Menu.Editor;
 
-namespace multi
+namespace EditorEngine
 {
     /// <summary>
     /// This is the main type for your game.
@@ -31,12 +25,8 @@ namespace multi
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D tex;
-        Texture2D planeParms;
-        Texture2D specialPoints;
-        Texture2D pointer;
         private SpriteFont font;
         Model model;
-        Animations _animations;
         Effect gameEffect;
         ObjectInspector objectInspector;
         List<IKeyStroke> keys = new List<IKeyStroke>();
@@ -112,7 +102,7 @@ namespace multi
 
             SetUpVertices();
             player = new Player(Vector2.Zero);
-            multi.GameUtility.Physic.Point circle = new multi.GameUtility.Physic.Point(new Vector2(positionOnPlane.X, positionOnPlane.Z));
+            Engine.GameUtility.Physic.Point circle = new Engine.GameUtility.Physic.Point(new Vector2(positionOnPlane.X, positionOnPlane.Z));
             player.CollisionObject = circle;
             player.CollisionObject.OnCollision += new CollideDetected(delegate(ICollider item)
             {
@@ -238,13 +228,6 @@ namespace multi
                 if (mouse.LeftButton == ButtonState.Released && OldPushed == true)
                 {
                     OldPushed = false;
-                }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.F12))
-                {
-                    TEST = true;
-                    Map.SaveMe();
-                    Map.InitTestGame(player);
                 }
             }
             else

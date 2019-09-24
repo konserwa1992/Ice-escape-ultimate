@@ -6,9 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Camera;
+using Engine.GameUtility.Camera;
 
-namespace multi.GameUtility.Map.Elements.Enemies.Guns
+namespace Engine.GameUtility.Map.Elements.Enemies.Guns
 {
     class Bullet : IMapElement
     {

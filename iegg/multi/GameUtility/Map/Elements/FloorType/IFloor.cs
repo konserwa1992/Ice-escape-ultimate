@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Control;
-using multi.GameUtility.Physic;
+using Engine.GameUtility.Control;
+using Engine.GameUtility.Physic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace multi.GameUtility.Map.Elements.FloorType
+namespace Engine.GameUtility.Map.Elements.FloorType
 {
     public interface IFloor
     {

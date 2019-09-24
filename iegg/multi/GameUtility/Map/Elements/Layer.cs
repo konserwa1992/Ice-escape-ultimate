@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Map.Elements.SheetInfo;
+using Engine.GameUtility.Map.Elements.SheetInfo;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 
-namespace multi.GameUtility.Map.Elements
+namespace Engine.GameUtility.Map.Elements
 {
     public class Layer : ILayer
     {

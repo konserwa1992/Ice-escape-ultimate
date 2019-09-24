@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using multi.GameUtility.Camera;
-using multi.GameUtility.Map;
-using multi.GameUtility.Map.Elements;
-using multi.GameUtility.Map.Elements.Enemies.Guns;
+using Engine.GameUtility.Camera;
+using Engine.GameUtility.Map;
+using Engine.GameUtility.Map.Elements;
+using Engine.GameUtility.Map.Elements.Enemies.Guns;
 using Myra;
 using Myra.Graphics2D.UI;
 using System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Menu.Editor.Windows.Special
+namespace Engine.GameUtility.Menu.Editor.Windows.Special
 {
     class GunInspector : Window
     {

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace multi.GameUtility.Physic
+namespace Engine.GameUtility.Physic
 {
-    class Circle : ICollider
+    public class Circle : ICollider
     {
         public float Radius;
         public Vector2 Position;

@@ -7,27 +7,27 @@ using System.Threading.Tasks;
 using Myra;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Map.Elements;
-using multi.GameUtility.Menu.Editor.Windows;
-using multi.GameUtility.Menu.Editor.Windows.Special;
-using multi.GameUtility.Map.Elements.Enemies.Guns;
-using multi.GameUtility.Map.Elements.FloorType;
+using Engine.GameUtility.Map.Elements;
+using Engine.GameUtility.Menu.Editor.Windows;
+using Engine.GameUtility.Menu.Editor.Windows.Special;
+using Engine.GameUtility.Map.Elements.Enemies.Guns;
+using Engine.GameUtility.Map.Elements.FloorType;
 
-namespace multi.GameUtility.Menu.Editor
+namespace EditorEngine.GameUtility.Menu.Editor
 {
     /// <summary>
     /// Lib is fine, just this code is trash.
     /// when you grow up your heart die
     /// </summary>
-    class ObjectInspector
+    public class ObjectInspector
     {
         public Desktop Desktop;
         public string selectedID { get; private set; }
         private Window inspectorWindow;
 
-        public ObjectInspector(multi.Editor editor)
+        public ObjectInspector(object editor)
         {
-            MyraEnvironment.Game = editor;
+            MyraEnvironment.Game = (Game)editor;
             MyraEnvironment.DrawWidgetsFrames = true;
             Desktop = new Desktop();
            
@@ -63,7 +63,7 @@ namespace multi.GameUtility.Menu.Editor
             lObjectList.SelectedIndexChanged += new EventHandler(delegate (object sender, EventArgs args)
             {
                 selectedID = lObjectList.SelectedItem.Id;
-                IMapElement MapElement = ((multi.Editor)MyraEnvironment.Game).Map.GetMapElementByName<IMapElement>(selectedID);
+                IMapElement MapElement = ((EditorEngine.Editor)MyraEnvironment.Game).Map.GetMapElementByName<IMapElement>(selectedID);
                 if (MapElement != null)
                 {
                     if (typeof(Gun) == MapElement.GetType())
@@ -72,7 +72,7 @@ namespace multi.GameUtility.Menu.Editor
                 else
                 {
                     IFloor NewFloorElement =
-                        ((multi.Editor) MyraEnvironment.Game).Map.GetMapElementByName<IFloor>(selectedID);
+                        ((EditorEngine.Editor) MyraEnvironment.Game).Map.GetMapElementByName<IFloor>(selectedID);
 
                 }
             });
@@ -96,8 +96,8 @@ namespace multi.GameUtility.Menu.Editor
 
         public void Draw()
         {
-            List<IMapElement> mapElementRefference = ((multi.Editor)MyraEnvironment.Game).Map.MapElements;
-            List<IFloor> mapFloorTypeRefference = ((multi.Editor)MyraEnvironment.Game).Map.MapPath;
+            List<IMapElement> mapElementRefference = ((EditorEngine.Editor)MyraEnvironment.Game).Map.MapElements;
+            List<IFloor> mapFloorTypeRefference = ((EditorEngine.Editor)MyraEnvironment.Game).Map.MapPath;
             Desktop.Bounds = new Rectangle(0, 0, MyraEnvironment.Game.GraphicsDevice.PresentationParameters.BackBufferWidth,
              MyraEnvironment.Game.GraphicsDevice.PresentationParameters.BackBufferHeight);
 

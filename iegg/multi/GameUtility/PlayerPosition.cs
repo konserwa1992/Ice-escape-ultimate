@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using multi.GameUtility.Control;
+using Engine.GameUtility.Control;
 using Microsoft.Xna.Framework;
-using multi.GameUtility.Physic;
+using Engine.GameUtility.Physic;
 using Point = Microsoft.Xna.Framework.Point;
+using NETGame;
 
-namespace multi.GameUtility
+namespace Engine.GameUtility
 {
 	public class Player
 	{
@@ -19,6 +20,7 @@ namespace multi.GameUtility
 		public Vector2 Forward = new Vector2(1,0);
         public  bool AliveBoiiii = false;
         public ICollider CollisionObject { get; set; }
+        public PlayerClass PlayerNetInfo { get; set; }
 
         public Player()
 		{
@@ -53,7 +55,7 @@ namespace multi.GameUtility
             if (AliveBoiiii == true)
             {
                 this.Position += this.Forward * Speed * _controll.GroundSpeed;
-                ((multi.GameUtility.Physic.Point) CollisionObject).Position = this.Position;
+                ((Engine.GameUtility.Physic.Point) CollisionObject).Position = this.Position;
             }
 		}
 	}

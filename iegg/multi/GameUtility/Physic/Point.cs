@@ -2,9 +2,9 @@
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 
-namespace multi.GameUtility.Physic
+namespace Engine.GameUtility.Physic
 {
-    internal class Point : ICollider
+    public class Point : ICollider
     {
         public Vector2 Position { get; set; }
         public string Name { get; set; }

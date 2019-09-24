@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace multi.GameUtility.Controll.KeyStroke
+namespace Engine.GameUtility.Controll.KeyStroke
 {
-    class BiStableKey: IKeyStroke
+    public class BiStableKey: IKeyStroke
     {
         public Keys Key { get; set; }
         private bool isPushed = false;

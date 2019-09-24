@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Map;
+using Engine.GameUtility.Map;
 
-namespace multi.GameUtility.Physic
+namespace Engine.GameUtility.Physic
 {
-    class Line : ICollider
+    public class Line : ICollider
     {
         public Vector2 Point1, Point2;
         public string Name { get; set; }

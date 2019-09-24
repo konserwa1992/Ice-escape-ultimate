@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Map
+namespace Engine.GameUtility.Map
 {
     public struct VertexPosTexNormal
     {

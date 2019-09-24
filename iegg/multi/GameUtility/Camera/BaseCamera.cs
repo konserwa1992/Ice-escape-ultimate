@@ -7,9 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace multi.GameUtility.Camera
+namespace Engine.GameUtility.Camera
 {
-    class BaseCamera : ICamera
+   public class BaseCamera : ICamera
     {
         public Vector3 Position { get; set; } = new Vector3(0, 200,200);
         public Vector3 CameraTarget { get; set; } = new Vector3(0, 0, 0);

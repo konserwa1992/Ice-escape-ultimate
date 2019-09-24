@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace multi.GameUtility.Map.Elements
+namespace Engine.GameUtility.Map.Elements
 {
     public class SpawnPoint : IMapElement
     {

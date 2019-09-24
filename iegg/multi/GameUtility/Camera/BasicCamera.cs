@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace multi.GameUtility.Camera
+namespace Engine.GameUtility.Camera
 {
-    class BasicCamera: BaseCamera
+    public class BasicCamera: BaseCamera
     {
         public Ray CalculateCursorRay(float X, float Y)
         {

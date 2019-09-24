@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static multi.GameUtility.Map.Elements.SpawnPoint;
-using static multi.GameUtility.Map.Map;
+using static Engine.GameUtility.Map.Elements.SpawnPoint;
+using static Engine.GameUtility.Map.Map;
 
-namespace multi.GameUtility.Map
+namespace Engine.GameUtility.Map
 {
     /// <summary>
     /// Szajs od obliczania płaszczyzn sterowania.
     /// </summary>
-    class PlaneControll
+   public class PlaneControll
     {
        public VertexPosTexNormal[] controlMap;
 

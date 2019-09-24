@@ -1,15 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Camera;
+using Engine.GameUtility.Camera;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Map.Elements.Enemies.Guns
+namespace Engine.GameUtility.Map.Elements.Enemies.Guns
 {
-    class Gun : IMapElement
+    public class Gun : IMapElement
     {
         public float RotationSpeed { get; set; }
         public int ShootInterval { get; set; }

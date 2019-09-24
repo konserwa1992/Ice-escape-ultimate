@@ -6,12 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace multi.GameUtility.Controll.KeyStroke
+namespace Engine.GameUtility.Controll.KeyStroke
 {
 
     public delegate void ClickTrigger();
 
-    interface IKeyStroke
+    public interface IKeyStroke
     {
         Keys Key { get; set; }
         void Update();

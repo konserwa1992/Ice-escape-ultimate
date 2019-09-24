@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Control;
-using multi.GameUtility.Physic;
+using Engine.GameUtility.Control;
+using Engine.GameUtility.Physic;
 
 
-namespace multi.GameUtility.Map.Elements.FloorType
+namespace Engine.GameUtility.Map.Elements.FloorType
 {
     class RegularIce: IFloor
     {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using multi.GameUtility.Physic;
+using Engine.GameUtility.Physic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.GameUtility.Map.Elements
+namespace Engine.GameUtility.Map.Elements
 {
     delegate int OnInteract(params object[] interactObjects);
     delegate int OnCollision(ICollider collider);

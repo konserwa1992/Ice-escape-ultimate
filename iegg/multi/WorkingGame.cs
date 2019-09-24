@@ -3,18 +3,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Diagnostics;
-using multi.GameUtility;
-using multi.GameUtility.Camera;
-using multi.GameUtility.Map;
+using Engine.GameUtility;
+using Engine.GameUtility.Camera;
+using Engine.GameUtility.Map;
 using System.Linq;
-using multi.GameUtility.Map.Elements;
+using Engine.GameUtility.Map.Elements;
 using System.IO;
 using Newtonsoft.Json;
-using multi.GameUtility.Map.Elements.Enemies.Guns;
+using Engine.GameUtility.Map.Elements.Enemies.Guns;
 using Myra.Graphics2D.UI;
 using Myra;
 
-namespace multi
+namespace Engine
 {
     /// <summary>
     /// This is the main type for your game.
@@ -24,9 +24,6 @@ namespace multi
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D tex;
-        Texture2D planeParms;
-        Texture2D specialPoints;
-        Texture2D pointer;
         private SpriteFont font;
         Model model;
         Model model2;

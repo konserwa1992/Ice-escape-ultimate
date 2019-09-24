@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace multi.GameUtility.AdditionalMath
+namespace Engine.GameUtility.AdditionalMath
 {
 	class MyMath
 	{
