@@ -36,6 +36,7 @@ namespace Engine.GameUtility.Control
 			{
               
                 ClickPosition = new Vector2(planePosition.X, planePosition.Z);
+
                     DestinationVector = (ClickPosition - player.Position);
                     DestinationVector = Vector2.Normalize(DestinationVector);
 

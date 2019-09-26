@@ -136,7 +136,7 @@ namespace WindowsGame
             var config = new NetPeerConfiguration("application name");
             Client = new NetClient(config);
             Client.Start();
-            Client.Connect(host: "192.168.8.100", port: 12345);
+            Client.Connect(host: "127.0.0.1", port: 12345);
 
             // MapWriter.Write(jsonSerialize);
         }
@@ -312,14 +312,8 @@ namespace WindowsGame
             GraphicsDevice.Clear(ClearOptions.DepthBuffer | ClearOptions.Stencil | ClearOptions.Target, Color.CornflowerBlue, 1f, 0);
 
 
-            if (player.AliveBoiiii == false)
-            {
-
-
-                //player.Position = _map._mapElementCollection.Find(x=>x.GetType() == typeof(SpawnPoint)).Position;
-            }
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default);
-            spriteBatch.DrawString(font, $"Collider {collision} Stand on {StandFloorDebug}", Vector2.Zero, Color.Black);
+            spriteBatch.DrawString(font, $"Collider {collision} Stand on {StandFloorDebug}  PlayerID {(player.PlayerNetInfo!=null? player.PlayerNetInfo.ID:0)}", Vector2.Zero, Color.Black);
             spriteBatch.End();
 
 
@@ -360,6 +354,7 @@ namespace WindowsGame
                             effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
                             effect.EnableDefaultLighting();
                             effect.LightingEnabled = true;
+                            effect.TextureEnabled = false;
                             effect.VertexColorEnabled = true;
                         }
                         mesh.Draw();

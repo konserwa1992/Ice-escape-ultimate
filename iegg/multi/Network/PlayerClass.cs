@@ -25,6 +25,7 @@ namespace NETGame
 
         public void Interpolate()
         {
+            //  if (Math.Max(interStep ,1.0f)!=1.0f)
             if (interStep <= 1.0f)
             {
                 interStep += 0.30f;
