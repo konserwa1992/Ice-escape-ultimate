@@ -31,8 +31,39 @@ namespace Engine.GameUtility.Control
 		public void Update(GameTime time, Player player,Vector3 planePosition)
 		{
 			var mouse = Mouse.GetState();
+/*
+            Vector2 move2 = Vector2.Zero;
 
-			if (mouse.RightButton == ButtonState.Pressed && _oldButtonPushed == ButtonState.Released)
+
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                move2.X += 5;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                move2.X -= 5;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                move2.Y -= 5;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                move2.Y += 5;
+            }
+
+            if (player != null)
+                player.Position += move2;*/
+
+
+            if (mouse.RightButton == ButtonState.Pressed && _oldButtonPushed == ButtonState.Released)
 			{
               
                 ClickPosition = new Vector2(planePosition.X, planePosition.Z);
@@ -78,6 +109,6 @@ namespace Engine.GameUtility.Control
 
 		    _oldButtonPushed = mouse.RightButton;
 
-		}
+        }
 	}
 }

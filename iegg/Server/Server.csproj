@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>H:\dump pobieran\lidgren-network-gen3-master\Lidgren.Network\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -50,10 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameRoom.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\GameOpcodeSheet.cs" />
+    <Compile Include="States\IPacketDataSheet.cs" />
+    <Compile Include="States\MenuOpcodeSheet.cs" />
     <Compile Include="UserSession.cs" />
-    <Compile Include="UserSessionContainer.cs" />
+    <Compile Include="NetworkSessionAndDataContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -64,10 +71,7 @@
       <Project>{7878ABD5-2933-4D29-A055-C87F8FB91EB4}</Project>
       <Name>Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TESTLib\TESTLib.csproj">
-      <Project>{9158d0a3-0615-4229-8f38-1823fc2b178d}</Project>
-      <Name>TESTLib</Name>
-    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
