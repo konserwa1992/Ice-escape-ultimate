@@ -31,6 +31,7 @@ namespace WindowsGame
         Line LineTEST = new Line(new Vector2(0, 0), new Vector2(64, 64));
 
         private Player player;
+        private string PlayerName;
         VertexPositionColor[] vertices;
         public Map Map { get; private set; }
         private Vector3 positionOnPlane;
@@ -43,20 +44,16 @@ namespace WindowsGame
         private bool collision = false;
         private string StandFloorDebug = "";
 
-
-
-
-        /// <summary>
         /// TEST GRY PO SIECI
         /// </summary>
         NetClient Client;
         List<PlayerClass> OtherPlayerList = new List<PlayerClass>();
         double akumulator = 0.0f;
 
-        public Game1()
+        public Game1(string name)
         {
             graphics = new GraphicsDeviceManager(this);
-
+            PlayerName = name;
 
 #if ANDROID
             graphics.IsFullScreen = true;
@@ -73,6 +70,15 @@ namespace WindowsGame
             IsMouseVisible = true;
             Content.RootDirectory = "Content";
 #endif
+
+
+
+            ////SIEC//////////////////////////////
+            var config = new NetPeerConfiguration("application name");
+            Client = new NetClient(config);
+            Client.Start();
+            Client.Connect(host: "127.0.0.1", port: 12345);
+
         }
 
         /// <summary>
@@ -123,20 +129,14 @@ namespace WindowsGame
             model = Content.Load<Model>("robot");
             
             StreamReader MapWriter = new StreamReader("C:\\pasta\\Map0.json");
-            object objectMap = JsonConvert.DeserializeObject<Map>(MapWriter.ReadToEnd(),
+            Map objectMap = JsonConvert.DeserializeObject<Map>(MapWriter.ReadToEnd(),
                 new JsonSerializerSettings()
                 {
                     TypeNameHandling = TypeNameHandling.Objects
                 });
             MapWriter.Close();
-            Map = (Map)objectMap;
+            Map = objectMap;
             Map.InitTestGame(player);
-
-
-            var config = new NetPeerConfiguration("application name");
-            Client = new NetClient(config);
-            Client.Start();
-            Client.Connect(host: "127.0.0.1", port: 12345);
 
             // MapWriter.Write(jsonSerialize);
         }
@@ -183,7 +183,6 @@ namespace WindowsGame
             {
                 var newMSG = Client.CreateMessage();
                 newMSG.Write((short)6066);
-                newMSG.Write(player.PlayerNetInfo.ID);
                 newMSG.Write(player.Position.X);
                 newMSG.Write(player.Position.Y);
                 Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);

@@ -68,6 +68,7 @@
     <Compile Include="GameUtility\Controll\ReverseIceControll.cs" />
     <Compile Include="GameUtility\Map\Elements\FloorType\IFloor.cs" />
     <Compile Include="GameUtility\Map\Elements\FloorType\RegularIce.cs" />
+    <Compile Include="Network\JoinRoomPacket.cs" />
     <Compile Include="Network\MovePacket.cs" />
     <Compile Include="GameUtility\Physic\Circle.cs" />
     <Compile Include="GameUtility\Physic\Line.cs" />

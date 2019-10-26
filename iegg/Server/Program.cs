@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
+using multi.Network;
 using NETGame;
+using Server.States;
 
 
 namespace Server
@@ -15,8 +17,7 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            UserSessionContainer UsersSessions = new UserSessionContainer();
-             var config = new NetPeerConfiguration("application name")
+            var config = new NetPeerConfiguration("application name")
             { Port = 12345 };
             var server = new NetServer(config);
             server.Start();
@@ -46,25 +47,37 @@ namespace Server
                         }
                     case NetIncomingMessageType.Data:
                         {
+
                             short opcode = msg.ReadInt16();
-                            if(opcode==2000)
+                            if(opcode==2000) //Logowanie użytkownika
                             {
-                              
-                                unsafe
+                               unsafe
                                 {
-                                    UserSession session = new UserSession(0, msg.SenderConnection);
-                                    TypedReference tr = __makeref(session);
-                                    IntPtr ptr = **(IntPtr**)(&tr);
-                                    Console.WriteLine(ptr);
-                                    session.ID = ptr.ToInt32();
-                               
+                                    if (!NetworkSessionContainer.NetworkSessions.UserSessions.Exists(x => x.Connection == msg.SenderConnection))
+                                    {
+                                        UserSession session = new UserSession(0, msg.SenderConnection);
+                                        TypedReference tr = __makeref(session);
+                                        IntPtr ptr = **(IntPtr**) (&tr);
+                                        Console.WriteLine(ptr);
+                                        session.ID = ptr.ToInt32();
 
-                                    NetOutgoingMessage outMessage = session.Connection.Peer.CreateMessage();
-                                    outMessage.Write((short)2000);
-                                    outMessage.Write(session.ID);
-                                    session.Connection.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered, outMessage.LengthBytes);
 
-                                    foreach (UserSession otherPlayers in UsersSessions.Sessions)
+                                        NetOutgoingMessage outMessage = session.Connection.Peer.CreateMessage();
+                                        outMessage.Write((short) 2000);
+                                        outMessage.Write(session.ID);
+                                        session.Connection.SendMessage(outMessage, NetDeliveryMethod.ReliableOrdered,
+                                            outMessage.LengthBytes);
+                                        NetworkSessionContainer.NetworkSessions.UserSessions.Add(session);
+
+                                        session.PacketSheetState = new MenuOpcodeSheet();
+                                    }
+                                    else
+                                    {
+                                        //Zaimplementować że jest już taki gość
+                                    }
+                                   
+                                    //TO NIE SPAWN A LOGIN
+                                    /*foreach (UserSession otherPlayers in UsersSessions.Sessions)
                                     {
                                         NetOutgoingMessage informAboutPlayer = session.Connection.Peer.CreateMessage();
                                         informAboutPlayer.Write((short)2620);
@@ -82,26 +95,13 @@ namespace Server
                                         otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);
                                         Console.WriteLine($"Wysyłam pakiet od {otherPlayers.ID} wysyłam dane o {session.ID}");
                                       //  Console.WriteLine(BitConverter.ToString(SendToCurrentPlayerAboutPlayers.Data));
-                                    }
+                                    }*/
 
-                                    UsersSessions.Sessions.Add(session);
                                 }
                             }
-                            else if (opcode == 6066)
+                            else
                             {
-                                MovePacket move = new MovePacket();
-                                msg.ReadAllProperties((object)move);
-
-                                foreach (UserSession otherPlayers in UsersSessions.Sessions)
-                                {
-                                    if(otherPlayers.ID != move.ID) { 
-                                    NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
-                                    SendToCurrentPlayerAboutPlayers.Write((short)6066);
-                                    SendToCurrentPlayerAboutPlayers.Write(move.ID);
-                                    SendToCurrentPlayerAboutPlayers.Write(move.X);
-                                    SendToCurrentPlayerAboutPlayers.Write(move.Y);
-                                    otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);}
-                                }
+                              
                             }
                             break;
                         }
