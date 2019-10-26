@@ -30,6 +30,7 @@ namespace Engine.GameUtility.Control
 
 		public void Update(GameTime time, Player player,Vector3 planePosition)
 		{
+
 		    Vector2 move2 = Vector2.Zero;
 		    if (Keyboard.GetState().IsKeyDown(Keys.D))
 		    {
@@ -55,9 +56,11 @@ namespace Engine.GameUtility.Control
 
 		    if (player != null)
 		        player.Position += move2;
-            /*var mouse = Mouse.GetState();
 
-			if (mouse.RightButton == ButtonState.Pressed && _oldButtonPushed == ButtonState.Released)
+		    var mouse = Mouse.GetState();
+           
+
+            if (mouse.RightButton == ButtonState.Pressed && _oldButtonPushed == ButtonState.Released)
 			{
               
                 ClickPosition = new Vector2(planePosition.X, planePosition.Z);

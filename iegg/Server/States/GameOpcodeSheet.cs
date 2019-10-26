@@ -13,13 +13,33 @@ namespace Server.States
     {
         public GameRoom UserRoom {get; set; }
         public UserSession Current { get; set; }
-
         private Stopwatch SendPositionInterval { get; set; }
 
 
-        public GameOpcodeSheet()
+        public GameOpcodeSheet(UserSession current, GameRoom room)
         {
+            this.Current = current;
+            UserRoom = room;
             SendPositionInterval.Start();
+
+            foreach (UserSession otherPlayers in UserRoom.PlayersInRoomCollection)
+            {
+                foreach (UserSession user in UserRoom.PlayersInRoomCollection)
+                {
+                    if (user != otherPlayers)
+                    {
+                        NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
+                        SendToCurrentPlayerAboutPlayers.Write((short)2620);
+                        SendToCurrentPlayerAboutPlayers.Write(user.ID, 32);
+                        SendToCurrentPlayerAboutPlayers.Write("konserwa");
+                        otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);
+                    }
+                    //Console.WriteLine($"Wysyłam pakiet od {otherPlayers.ID} wysyłam dane o {session.ID}");
+                }
+
+
+                //  Console.WriteLine(BitConverter.ToString(SendToCurrentPlayerAboutPlayers.Data));
+            }
         }
 
         public void SendPlayerPositions()
@@ -53,7 +73,7 @@ namespace Server.States
         {
             short opcode = msg.ReadInt16();
 
-            if (opcode == 6066)
+            if (opcode == MovePacket.OpCode)
             {
                 MovePacket move = new MovePacket();
                 move.X = msg.ReadInt32();
@@ -64,7 +84,8 @@ namespace Server.States
                     if (otherPlayers.Connection != msg.SenderConnection && otherPlayers.ID != Current.ID)
                     {
                         NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
-                        SendToCurrentPlayerAboutPlayers.Write((short)6066);
+                        SendToCurrentPlayerAboutPlayers.Write(MovePacket.OpCode);
+
                         SendToCurrentPlayerAboutPlayers.Write(Current.ID);
                         SendToCurrentPlayerAboutPlayers.Write(move.X);
                         SendToCurrentPlayerAboutPlayers.Write(move.Y);

@@ -68,6 +68,8 @@
     <Compile Include="GameUtility\Controll\ReverseIceControll.cs" />
     <Compile Include="GameUtility\Map\Elements\FloorType\IFloor.cs" />
     <Compile Include="GameUtility\Map\Elements\FloorType\RegularIce.cs" />
+    <Compile Include="Network\CreateRoom.cs" />
+    <Compile Include="Network\IPacket.cs" />
     <Compile Include="Network\JoinRoomPacket.cs" />
     <Compile Include="Network\MovePacket.cs" />
     <Compile Include="GameUtility\Physic\Circle.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="GameUtility\Physic\Point.cs" />
     <Compile Include="GameUtility\Physic\Polygon.cs" />
     <Compile Include="Network\PlayerClass.cs" />
+    <Compile Include="Network\RoomInfo.cs" />
     <Compile Include="WorkingGame.cs" />
     <Compile Include="GameUtility\Camera\BaseCamera.cs" />
     <Compile Include="GameUtility\Camera\BasicCamera.cs" />

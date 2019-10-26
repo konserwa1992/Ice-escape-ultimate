@@ -18,11 +18,11 @@ namespace Server
         public int MaxPlayers { get; private set; }
         public Map GameMap { get; set; }
         public string Name { get; set; }
-        public int StopWatch { get; set; }
 
-        public GameRoom(UserSession master,int maxPlayers)
+        public GameRoom(UserSession master, string name, int maxPlayers)
         {
             Master = master;
+            Name = name;
             PlayersInRoomCollection.Add(Master);
             MaxPlayers = maxPlayers;
         }
@@ -31,7 +31,6 @@ namespace Server
         {
             if (PlayersInRoomCollection.Count <= MaxPlayers)
             {
-                //Zmiana Parsowania pakietów na Room(Nie istnieje jeszcze)
                 PlayersInRoomCollection.Add(player);
             }
             else
@@ -45,10 +44,11 @@ namespace Server
         {
             if (UserWhoWantStart == Master)
             {
+
                 LoandMap(1);
                 foreach (UserSession singlePlayer in PlayersInRoomCollection)
                 {
-                    singlePlayer.PacketSheetState = new GameOpcodeSheet();  
+                    singlePlayer.PacketSheetState = new GameOpcodeSheet(singlePlayer,this);  
                     //Zmiana Parsowania pakietów na GRE(Nie istnieje jeszcze)
                 }
             }

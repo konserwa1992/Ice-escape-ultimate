@@ -19,6 +19,7 @@ namespace Engine.GameUtility
 
 		public Vector2 Position = Vector2.Zero;
 		public Vector2 Forward = new Vector2(1,0);
+        public Vector2 OldForward = new Vector2(1, 0);
         public  bool AliveBoiiii = false;
         public ICollider CollisionObject { get; set; }
         public PlayerClass PlayerNetInfo { get; set; }
