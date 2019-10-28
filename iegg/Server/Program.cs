@@ -101,12 +101,8 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSessionContainer.NetworkSessions.UserSessions.Find(x => x.Connection == msg.SenderConnection).PacketSheetState.Process(msg);
+                              
                             }
-
-
-
-
                             break;
                         }
                     case NetIncomingMessageType.ErrorMessage:

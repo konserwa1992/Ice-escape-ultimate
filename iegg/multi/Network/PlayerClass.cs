@@ -17,7 +17,6 @@ namespace NETGame
         public Vector2 StartPosition { get; set; }
         public Vector2 EndPosition { get; set; }
         public float interStep = 0;
-        public float interstepAdd = 0.01f;
 
         public PlayerClass()
         {
@@ -26,8 +25,13 @@ namespace NETGame
 
         public void Interpolate()
         {
-            interStep += interstepAdd;
-            CurrPosition = Vector2.Lerp(StartPosition, EndPosition,MathHelper.Clamp(interStep,0.0f,1.0f));
+            //  if (Math.Max(interStep ,1.0f)!=1.0f)
+            if (interStep <= 1.0f)
+            {
+                interStep += 0.30f;
+
+                CurrPosition = Vector2.Lerp(StartPosition, EndPosition,interStep);
+            }
         }
     }
 }

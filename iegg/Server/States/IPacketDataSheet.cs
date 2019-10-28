@@ -12,6 +12,7 @@ namespace Server.States
         GameRoom UserRoom { get; set; }
         UserSession Current { get; set; }
 
+
         bool RecivedPacket(NetIncomingMessage msg);
     } 
 }

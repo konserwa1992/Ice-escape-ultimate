@@ -134,7 +134,7 @@ namespace Engine
 
             if (TEST == false)
             {
-                if (mouse.LeftButton == ButtonState.Pressed && OldPushed == false )
+                if (mouse.LeftButton == ButtonState.Pressed && OldPushed == false)
                 {
                     _map.MapLayers[1].LayerClick((((int)positionOnPlane.X / 32)) * 32, (((int)positionOnPlane.Z / 32)) * 32);
                     OldPushed = true;
