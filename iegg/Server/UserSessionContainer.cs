@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace multi.Network
+namespace Server
 {
-   public class JoinRoomPacket
+    class UserSessionContainer
     {
-        public string RoomName { get; set; }
+        public List<UserSession> Sessions = new List<UserSession>();
     }
 }

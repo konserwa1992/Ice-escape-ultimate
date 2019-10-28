@@ -5,8 +5,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using NETGame;
-using Server.States;
 
 namespace Server
 {
@@ -14,7 +12,6 @@ namespace Server
     {
         public int ID { get; set; }
         public NetConnection Connection { get; set; }
-        public IPacketOpCodeSheet PacketSheetState { set; get; }
 
         public UserSession(int id,NetConnection connection)
         {

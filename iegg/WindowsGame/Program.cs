@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace WindowsGame
 {
@@ -13,9 +12,9 @@ namespace WindowsGame
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
-            using (var game = new Game1(args[0]))
+            using (var game = new Game1())
                 game.Run();
         }
     }
