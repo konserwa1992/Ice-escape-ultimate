@@ -1,4 +1,5 @@
-﻿using Lidgren.Network;
+﻿using Engine.GameUtility;
+using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using NETGame;
 using System;
@@ -14,9 +15,10 @@ namespace Server.States
     {
         public GameRoom UserRoom {get; set; }
         public Vector2 ForwardVector { get; set; } = Vector2.Zero;
-        public PlayerClass playerInfo { get; set; } = new PlayerClass();
+        public Player playerInfo { get; set; } = new Player();
         public UserSession Current { get; set; }
         private Stopwatch SendPositionPacketInterval = new Stopwatch();
+        private Stopwatch UpdateIntervalFPS = new Stopwatch();
 
         public GameOpcodeSheet(UserSession current, GameRoom room)
         {
@@ -24,6 +26,7 @@ namespace Server.States
             UserRoom = room;
 
             SendPositionPacketInterval.Start();
+            UpdateIntervalFPS.Start();
         }
 
         float sin = 0;
@@ -33,22 +36,21 @@ namespace Server.States
             if (SendPositionPacketInterval.ElapsedMilliseconds > (100))
             {
                 sin+=0.55f;
-                playerInfo.CurrPosition = new Vector2(sin*5, -(float)Math.Cos(sin) * 32);
+                playerInfo.PlayerNetInfo.CurrPosition = new Vector2(sin*5, -(float)Math.Cos(sin) * 32);
                 //To spawn
                 foreach (UserSession otherPlayers in UserRoom.PlayersInRoomCollection)
                 {
                         NetOutgoingMessage SendToCurrentPlayerAboutPlayers = otherPlayers.Connection.Peer.CreateMessage();
                         SendToCurrentPlayerAboutPlayers.Write(MovePacket.OpCode);
                         SendToCurrentPlayerAboutPlayers.Write(Current.ID);
-                        SendToCurrentPlayerAboutPlayers.Write(playerInfo.CurrPosition.X);
-                        SendToCurrentPlayerAboutPlayers.Write(playerInfo.CurrPosition.Y);
+                        SendToCurrentPlayerAboutPlayers.Write(playerInfo.PlayerNetInfo.CurrPosition.X);
+                        SendToCurrentPlayerAboutPlayers.Write(playerInfo.PlayerNetInfo.CurrPosition.Y);
                         otherPlayers.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);
-                        Console.WriteLine($"ID:{Current.ID} POS: X{playerInfo.CurrPosition.X};Y{playerInfo.CurrPosition.Y}");
+                        Console.WriteLine($"ID:{Current.ID} POS: X{playerInfo.PlayerNetInfo.CurrPosition.X};Y{playerInfo.PlayerNetInfo.CurrPosition.Y}");
                     }
                 SendPositionPacketInterval.Reset();
                 SendPositionPacketInterval.Start();
             }
-
         }
         
 
@@ -98,6 +100,13 @@ namespace Server.States
         public void Update()
         {
             SendMovePacket();
+
+            if (SendPositionPacketInterval.ElapsedMilliseconds > 17.0f)
+            {
+                playerInfo.Update();
+                SendPositionPacketInterval.Reset();
+                SendPositionPacketInterval.Start();
+            }
         }
     }
 }
