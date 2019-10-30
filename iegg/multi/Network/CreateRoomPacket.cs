@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace multi.Network
 {
-    public class CreateRoom
+    public class CreateRoomPacket
     {
-        public CreateRoom()
+        public CreateRoomPacket()
         {
 
         }
 
-        public CreateRoom(string name, bool privateRoom)
+        public CreateRoomPacket(string name, bool privateRoom)
         {
             Private = privateRoom;
             Name = name;

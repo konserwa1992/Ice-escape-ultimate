@@ -25,10 +25,18 @@ namespace Server
             // server
 
             NetIncomingMessage msg;
+
+            GameRoom newGameRoom = new GameRoom(null, "TEST", 8);
+            NetworkSessionContainer.NetworkSessions.GameRooms.Add(newGameRoom);
+
+
             while (true)
             {
-                foreach (GameRoom room in NetworkSessionContainer.NetworkSessions.GameRooms)
-                    room.Update();
+                //Ustawić odświerzanie co 16.666ms
+                foreach (IGameState palyerState in NetworkSessionContainer.NetworkSessions.UserSessions)
+                {
+                    palyerState.Update();
+                }
 
                 if ((msg = server.ReadMessage())==null) continue;
 
@@ -58,19 +66,20 @@ namespace Server
                                 {
                                     if (!NetworkSessionContainer.NetworkSessions.UserSessions.Exists(x => x.Connection == msg.SenderConnection))
                                     {
-                                        UserSession session = new UserSession(0, msg.SenderConnection);
+                                        UserSession session = new UserSession();
                                         TypedReference tr = __makeref(session);
                                         IntPtr ptr = **(IntPtr**) (&tr);
                                         Console.WriteLine(ptr);
+                                        session.Connection = msg.SenderConnection;
                                         session.ID = ptr.ToInt32();
-
+                                        session.Name = msg.ReadString();
 
                                         NetOutgoingMessage outMessage = session.Connection.Peer.CreateMessage();
                                         outMessage.Write((short) 2000);
                                         outMessage.Write(session.ID);
                                         session.Connection.SendMessage(outMessage, NetDeliveryMethod.UnreliableSequenced,
                                             outMessage.LengthBytes);
-                                        session.PacketSheetState = new MenuOpcodeSheet();
+                                        session.UserGameState = new MenuState();
                                         NetworkSessionContainer.NetworkSessions.UserSessions.Add(session);
                                         // Musze dorobić jakąś obsługe menu
                                      
@@ -105,7 +114,7 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSessionContainer.NetworkSessions.UserSessions.Find(x => x.Connection == msg.SenderConnection).PacketSheetState.Process(msg);
+                                NetworkSessionContainer.NetworkSessions.UserSessions.Find(x => x.Connection == msg.SenderConnection).UserGameState.Recive(msg);
                             }
 
 

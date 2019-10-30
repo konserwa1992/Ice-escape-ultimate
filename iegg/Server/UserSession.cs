@@ -14,9 +14,14 @@ namespace Server
     {
         public int ID { get; set; }
         public NetConnection Connection { get; set; }
-        public IPacketOpCodeSheet PacketSheetState { set; get; }
+        public IGameState UserGameState { set; get; }
+        public string Name;
 
-        public UserSession(int id,NetConnection connection)
+        public UserSession()
+        {
+        }
+
+        public UserSession(int id,string name,NetConnection connection)
         {
             Connection = connection;
             /* BigInteger l_retval = 0;
@@ -29,6 +34,7 @@ namespace Server
              }
 
              ID = l_retval.e;*/
+            Name = name;
             ID = id;
         }
     }

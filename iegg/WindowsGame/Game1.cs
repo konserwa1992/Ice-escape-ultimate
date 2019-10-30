@@ -2,19 +2,17 @@
 using Engine.GameUtility.Camera;
 using Engine.GameUtility.Controll.KeyStroke;
 using Engine.GameUtility.Map;
-using Engine.GameUtility.Map.Elements;
 using Engine.GameUtility.Physic;
 using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using multi.Network;
 using NETGame;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using multi.Network;
-using Myra.Graphics2D.UI;
+using System.Linq;
 
 namespace WindowsGame
 {
@@ -24,37 +22,36 @@ namespace WindowsGame
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Texture2D tex;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Texture2D tex;
         private SpriteFont font;
-        Model model;
-        Effect gameEffect;
-        List<IKeyStroke> keys = new List<IKeyStroke>();
-        Line LineTEST = new Line(new Vector2(0, 0), new Vector2(64, 64));
+        private Model model;
+        private Effect gameEffect;
+        private List<IKeyStroke> keys = new List<IKeyStroke>();
+        private Line LineTEST = new Line(new Vector2(0, 0), new Vector2(64, 64));
 
         private Player player;
         private string PlayerName;
-        VertexPositionColor[] vertices;
+        private VertexPositionColor[] vertices;
         public Map Map { get; private set; }
         private Vector3 positionOnPlane;
-
-        bool OldPushed = false;
-        float movePacketInterval = 50;
+        private bool OldPushed = false;
+        private float movePacketInterval = 50;
 
         private int multiplayer = 1;
-        bool TEST = false;
+        private bool TEST = false;
         private bool collision = false;
         private string StandFloorDebug = "";
 
         /// TEST GRY PO SIECI
         /// </summary>
-        NetClient Client;
-        List<PlayerClass> OtherPlayerList = new List<PlayerClass>();
-        double akumulator = 0.0f;
+        private NetClient Client;
+        private List<PlayerClass> OtherPlayerList = new List<PlayerClass>();
+        private double akumulator = 0.0f;
 
 
- 
+
         public Game1(string name)
         {
             graphics = new GraphicsDeviceManager(this);
@@ -67,8 +64,8 @@ namespace WindowsGame
             graphics.PreferredBackBufferHeight = 480;
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 #else
-         //   graphics.PreferredBackBufferWidth = 1920; // remove later
-          //  graphics.PreferredBackBufferHeight = 1080; // remove later
+            //   graphics.PreferredBackBufferWidth = 1920; // remove later
+            //  graphics.PreferredBackBufferHeight = 1080; // remove later
 
             graphics.PreferredBackBufferWidth = 800; // remove later
             graphics.PreferredBackBufferHeight = 600; // remove later
@@ -81,7 +78,7 @@ namespace WindowsGame
             Content.RootDirectory = "Content";
 #endif
 
-            
+
 
             ////SIEC//////////////////////////////
             var config = new NetPeerConfiguration("application name");
@@ -134,10 +131,10 @@ namespace WindowsGame
                 }
             });
             player.CollisionObject.OnCollision += new CollideDetected(EventMethod);
-            Director.InstanceDirector.Camera.SetDevice(this.GraphicsDevice);
+            Director.InstanceDirector.Camera.SetDevice(GraphicsDevice);
 
             model = Content.Load<Model>("robot");
-            
+
             StreamReader MapWriter = new StreamReader("pasta\\Map0.json");
             Map objectMap = JsonConvert.DeserializeObject<Map>(MapWriter.ReadToEnd(),
                 new JsonSerializerSettings()
@@ -224,7 +221,7 @@ namespace WindowsGame
 
 
 
-            if (akumulator > movePacketInterval && player.PlayerNetInfo != null && player.Forward!= player.OldForward)
+         /*   if (akumulator > movePacketInterval && player.PlayerNetInfo != null && player.Forward != player.OldForward)
             {
                 var newMSG = Client.CreateMessage();
                 newMSG.Write((short)6066);
@@ -232,8 +229,8 @@ namespace WindowsGame
                 newMSG.Write(player.Forward.Y);
                 Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
                 akumulator = 0;
-            }
-      
+            }*/
+
 
             /*
              if (akumulator > movePacketInterval && player.PlayerNetInfo!=null)
@@ -277,13 +274,13 @@ namespace WindowsGame
                                 else if (opcode == 2620)
                                 {
                                     PlayerClass playerTemp = new PlayerClass();
-                                    message.ReadAllProperties((object)playerTemp);
+                                    message.ReadAllProperties(playerTemp);
                                     OtherPlayerList.Add(playerTemp);
                                 }
                                 else if (opcode == 6066)
                                 {
                                     MovePacket movePacket = new MovePacket();
-                                    message.ReadAllProperties((object)movePacket);
+                                    message.ReadAllProperties(movePacket);
                                     PlayerClass player2Move = OtherPlayerList.FirstOrDefault(x => x.ID == movePacket.ID);
                                     if (player2Move != null)
                                     {
@@ -331,19 +328,26 @@ namespace WindowsGame
             }
 
 
-                if (mouse.RightButton == ButtonState.Pressed && player.AliveBoiiii == false && this.IsActive==true)
-                {
-                    player.AliveBoiiii = true;
-                }
 
-            if (this.IsActive)
+            if (IsActive)
             {
                 Ray _castRay = ((BasicCamera)Director.InstanceDirector.Camera).CalculateCursorRay(mouse.X, mouse.Y);
                 positionOnPlane = PlaneControll.IntersectPoint(_castRay.Direction, _castRay.Position, Vector3.Up, new Vector3(1, 0, 1));
                 StandFloorDebug = Map.UpdatePlayerMovmentType(player);
                 collision = Map.MapPath[0].FloorPolygon.IsCollide(player.CollisionObject);
             }
-            player.Update(gameTime, positionOnPlane);
+            //  player.Update(gameTime, positionOnPlane);
+
+            if (mouse.RightButton == ButtonState.Pressed && player.AliveBoiiii == false && IsActive == true)
+            {
+                var newMSG = Client.CreateMessage();
+                newMSG.Write((short)6066);
+                newMSG.Write(positionOnPlane.X);
+                newMSG.Write(positionOnPlane.Z);
+                Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
+            }
+
+
 
             Director.InstanceDirector.Camera.Update(gameTime);
             Map.Update(gameTime);
@@ -383,32 +387,32 @@ namespace WindowsGame
 
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default);
-            spriteBatch.DrawString(font, $"Collider {collision} Stand on {StandFloorDebug}  PlayerID {(player.PlayerNetInfo!=null? player.PlayerNetInfo.ID:0)} isActive:{this.IsActive}", Vector2.Zero, Color.Black);
+            spriteBatch.DrawString(font, $"Collider {collision} Stand on {StandFloorDebug}  PlayerID {(player.PlayerNetInfo != null ? player.PlayerNetInfo.ID : 0)} isActive:{IsActive}", Vector2.Zero, Color.Black);
             spriteBatch.End();
 
 
 
-                RasterizerState rs = new RasterizerState();
-                rs.CullMode = CullMode.CullCounterClockwiseFace;
-                rs.FillMode = FillMode.WireFrame;
+            RasterizerState rs = new RasterizerState();
+            rs.CullMode = CullMode.CullCounterClockwiseFace;
+            rs.FillMode = FillMode.WireFrame;
 
-                GraphicsDevice.RasterizerState = rs;
+            GraphicsDevice.RasterizerState = rs;
 
-                foreach (ModelMesh mesh in model.Meshes)
+            foreach (ModelMesh mesh in model.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
                 {
-                    foreach (BasicEffect effect in mesh.Effects)
-                    {
-                        effect.World = Matrix.CreateScale(2) * Matrix.CreateTranslation(new Vector3(player.Position.X, 0, player.Position.Y));
-                        effect.View = Director.InstanceDirector.Camera.ViewMatrix;
-                        effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
-                        effect.EnableDefaultLighting();
-                        effect.TextureEnabled = true;
-                        effect.LightingEnabled = true;
-                        effect.VertexColorEnabled = true;
-                    }
-
-                    mesh.Draw();
+                    effect.World = Matrix.CreateScale(2) * Matrix.CreateTranslation(new Vector3(player.Position.X, 0, player.Position.Y));
+                    effect.View = Director.InstanceDirector.Camera.ViewMatrix;
+                    effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
+                    effect.EnableDefaultLighting();
+                    effect.TextureEnabled = true;
+                    effect.LightingEnabled = true;
+                    effect.VertexColorEnabled = true;
                 }
+
+                mesh.Draw();
+            }
 
 
 
@@ -418,11 +422,11 @@ namespace WindowsGame
                 foreach (PlayerClass otherPl in OtherPlayerList)
                 {
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default);
-                    spriteBatch.DrawString(font, $"Player position {otherPl.NickName}", new Vector2(0, 20+ x), Color.Black);
-                    spriteBatch.DrawString(font, $"X:  {otherPl.CurrPosition.X.ToString()}", new Vector2(0, 40+ x), Color.Black);
+                    spriteBatch.DrawString(font, $"Player position {otherPl.NickName}", new Vector2(0, 20 + x), Color.Black);
+                    spriteBatch.DrawString(font, $"X:  {otherPl.CurrPosition.X.ToString()}", new Vector2(0, 40 + x), Color.Black);
                     spriteBatch.DrawString(font, $"Z:  {otherPl.CurrPosition.Y.ToString()}", new Vector2(0, 60 + x), Color.Black);
                     spriteBatch.DrawString(font, $"interstepAdd:  {otherPl.interstepAdd}", new Vector2(0, 80 + x), Color.Black);
-                    spriteBatch.DrawString(font, $"SendMovePacketInterval:  {this.movePacketInterval}", new Vector2(0, 90 + x), Color.Black);
+                    spriteBatch.DrawString(font, $"SendMovePacketInterval:  {movePacketInterval}", new Vector2(0, 90 + x), Color.Black);
                     spriteBatch.End();
                     x += 90;
                     foreach (ModelMesh mesh in model.Meshes)
