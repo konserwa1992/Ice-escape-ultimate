@@ -18,10 +18,11 @@ namespace Server.States
             {
                 case JoinRoomPacket.OpCode:
                     {
-                        JoinRoomPacket joinPacketInfo = new JoinRoomPacket(msg.ReadString());
+                        JoinRoomPacket joinPacketInfo = new JoinRoomPacket("");
+                        string name = msg.ReadString();
 
                         GameRoom
-                            GameStateWithRooms = NetworkSessionContainer.NetworkSessions.GameRooms.Where(x => x.Room.Name == joinPacketInfo.RoomName).FirstOrDefault();
+                            GameStateWithRooms = NetworkSessionContainer.NetworkSessions.GameRooms.Where(x => x.Room.Name == name).FirstOrDefault();
 
                         UserSession sendingUser = NetworkSessionContainer.NetworkSessions.UserSessions
                             .Where(x => x.Connection == msg.SenderConnection).FirstOrDefault();
@@ -69,7 +70,7 @@ namespace Server.States
 
         public void Update()
         {
-            throw new NotImplementedException();
+          //  throw new NotImplementedException();
         }
     }
 }

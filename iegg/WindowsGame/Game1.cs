@@ -84,7 +84,7 @@ namespace WindowsGame
             var config = new NetPeerConfiguration("application name");
             Client = new NetClient(config);
             Client.Start();
-            Client.Connect(host: "192.168.100.4", port: 12345);
+            Client.Connect(host: "192.168.100.10", port: 12345);
 
         }
 
@@ -265,7 +265,7 @@ namespace WindowsGame
 
                                     var newMSG = Client.CreateMessage();
 
-                                    JoinRoomPacket joinRoom = new JoinRoomPacket("TESTROOM");
+                                    JoinRoomPacket joinRoom = new JoinRoomPacket("TEST");
                                     newMSG.Write(JoinRoomPacket.OpCode);
                                     newMSG.Write(joinRoom.RoomName);
                                     Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
