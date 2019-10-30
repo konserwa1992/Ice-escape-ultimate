@@ -18,7 +18,9 @@ namespace Server.States
         public Player playerInfo { get; set; } = new Player();
         public UserSession Current { get; set; }
         private Stopwatch SendPositionPacketInterval = new Stopwatch();
-        private Stopwatch UpdateIntervalFPS = new Stopwatch();
+
+
+
 
         public GameOpcodeSheet(UserSession current, GameRoom room)
         {
@@ -26,14 +28,14 @@ namespace Server.States
             UserRoom = room;
 
             SendPositionPacketInterval.Start();
-            UpdateIntervalFPS.Start();
+          //  UpdateIntervalFPS.Start();
         }
 
         float sin = 0;
 
         public void SendMovePacket()
         {
-            if (SendPositionPacketInterval.ElapsedMilliseconds > (100))
+            /*if (SendPositionPacketInterval.ElapsedMilliseconds > (100))
             {
                 sin+=0.55f;
                 playerInfo.PlayerNetInfo.CurrPosition = new Vector2(sin*5, -(float)Math.Cos(sin) * 32);
@@ -50,7 +52,7 @@ namespace Server.States
                     }
                 SendPositionPacketInterval.Reset();
                 SendPositionPacketInterval.Start();
-            }
+            }*/
         }
         
 
@@ -67,6 +69,9 @@ namespace Server.States
                         move.X = msg.ReadFloat();
                         move.Y = msg.ReadFloat();
 
+
+
+                        Console.WriteLine($"{Current.ID} X:{move.X} Y:{move.Y}");
                      //   ForwardVector = new Vector2(move.X, move.Y);
 
                         /*foreach (UserSession otherPlayers in UserRoom.PlayersInRoomCollection)
@@ -103,10 +108,15 @@ namespace Server.States
 
             if (SendPositionPacketInterval.ElapsedMilliseconds > 17.0f)
             {
-                playerInfo.Update();
+              //  playerInfo.Update();
                 SendPositionPacketInterval.Reset();
                 SendPositionPacketInterval.Start();
             }
+        }
+
+        public bool Process(IGameState gameState, NetIncomingMessage msg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

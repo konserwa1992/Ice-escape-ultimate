@@ -1,23 +1,26 @@
 ﻿using Engine.GameUtility.Map;
 using Lidgren.Network;
-using Newtonsoft.Json;
+using multi.Network;
+using Server.Moduls;
+using Server.States;
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Server.States;
 
 namespace Server
 {
-    class GameRoom
+    internal class GameRoom
     {
-        public List<UserSession> PlayersInRoomCollection = new List<UserSession>();
+        #region Usunięte
+        /*public List<UserSession> PlayersInRoomCollection = new List<UserSession>();
         public UserSession Master;
         public int MaxPlayers { get; private set; }
         public Map GameMap { get; set; }
         public string Name { get; set; }
+        public IPacketOpCodeSheet PacketSheetState { set; get; }
+        private Stopwatch SendPositionPacketInterval = new Stopwatch();
+
 
         public GameRoom(UserSession master, string name, int maxPlayers)
         {
@@ -64,6 +67,9 @@ namespace Server
                         playersList.Connection.SendMessage(SendToCurrentPlayerAboutPlayers, NetDeliveryMethod.UnreliableSequenced, SendToCurrentPlayerAboutPlayers.LengthBytes);
                     }
                 }
+
+
+                SendPositionPacketInterval.Start();
             }
         }
 
@@ -78,13 +84,56 @@ namespace Server
             MapWriter.Close();
         }
 
+        public void RecivePacket()
+        {
+
+        }
+
         public void Update()
         {
+            if (SendPositionPacketInterval.ElapsedMilliseconds > (100))
+            {
+                foreach (UserSession singlePlayer in PlayersInRoomCollection)
+                {
+                    singlePlayer.PacketSheetState.
+                }
+
+                SendPositionPacketInterval.Reset();
+                SendPositionPacketInterval.Start();
+            }
+
+
             foreach (UserSession singlePlayer in PlayersInRoomCollection)
             {
                 singlePlayer.PacketSheetState.Update();
             }
             //Tu update ze statusu jaki maja uzytkownicy
+        }*/
+        #endregion
+
+        public Room Room { get; private set; }
+        public IPacketOpCodeSheet PacketParserSheet { get; set; }
+
+
+        public GameRoom(UserSession master, string name, int maxPlayers)
+        {
+            Room = new Room(name,master);
+        }
+
+        public void Start()
+        {
+
+        }
+
+
+        public void Recive(NetIncomingMessage msg)
+        {
+
+        }
+
+        public void Update()
+        {
+            
         }
     }
 }
