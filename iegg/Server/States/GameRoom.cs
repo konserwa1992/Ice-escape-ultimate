@@ -112,8 +112,6 @@ namespace Server
         #endregion
 
         public Room Room { get; private set; }
-        public IPacketOpCodeSheet PacketParserSheet { get; set; }
-
 
         public GameRoom(UserSession master, string name, int maxPlayers)
         {
@@ -122,7 +120,18 @@ namespace Server
 
         public void Start()
         {
+            foreach(UserSession user in Room.RoomMember)
+            {
+                user.UserGameState = new InMatchState(user,this);
 
+                foreach(UserSession spawnPlayer in Room.RoomMember)
+                {
+                    NetOutgoingMessage SendAllPlayersPositionToCurrentSession = user.Connection.Peer.CreateMessage();
+                    SendAllPlayersPositionToCurrentSession.Write(SpawnPacket.OpCode);
+                    SendAllPlayersPositionToCurrentSession.Write(spawnPlayer.ID);
+                    user.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
+                }
+            }
         }
 
 
@@ -133,7 +142,7 @@ namespace Server
 
         public void Update()
         {
-            
+
         }
     }
 }

@@ -114,7 +114,14 @@ namespace Server
                             }
                             else
                             {
-                                NetworkSessionContainer.NetworkSessions.UserSessions.Find(x => x.Connection == msg.SenderConnection).UserGameState.Recive(msg);
+                           //     NetworkSessionContainer.NetworkSessions.UserSessions.Find(x => x.Connection == msg.SenderConnection).UserGameState.Recive(msg);
+                                foreach(UserSession user in NetworkSessionContainer.NetworkSessions.UserSessions)
+                                {
+                                    if(user.Connection == msg.SenderConnection)
+                                    {
+                                        user.UserGameState.Recive(msg);
+                                    }
+                                }
                             }
 
 

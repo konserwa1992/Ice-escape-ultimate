@@ -9,7 +9,6 @@ namespace Server.States
 {
     interface IGameState
     {
-        IPacketOpCodeSheet PacketParserSheet { get; set; }
         void Recive(NetIncomingMessage msg);
         void Update();
     }

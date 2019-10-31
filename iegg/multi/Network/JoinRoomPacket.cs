@@ -13,7 +13,7 @@ namespace multi.Network
 
         public JoinRoomPacket(string roomName)
         {
-            this.RoomName = RoomName;
+            this.RoomName = roomName;
         }
     }
 }

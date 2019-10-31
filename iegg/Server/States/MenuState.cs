@@ -7,8 +7,6 @@ namespace Server.States
 {
     internal class MenuState : IGameState
     {
-        public IPacketOpCodeSheet PacketParserSheet { get; set; }
-
         public void Recive(NetIncomingMessage msg)
         {
             msg.Position = 0;
@@ -32,12 +30,18 @@ namespace Server.States
                             if (GameStateWithRooms.Room.Join(sendingUser)) // jak user sie nie podłączył, wysyła wiadomość osiągnięto limit graczy
                             {
                                 Console.WriteLine($"Dołączył {sendingUser.Name} do pokoju {GameStateWithRooms.Room.Name} ");
-                                sendingUser.UserGameState = new GameRoomState(sendingUser);
+                                sendingUser.UserGameState = new GameRoomState(sendingUser, GameStateWithRooms);
                             }
                         }
                         else
                         {
                             //Poinformowanie uzytkownika o nie odnaleźieniu pokoju
+                        }
+
+                        if(GameStateWithRooms.Room.RoomMember.Count==2)
+                        {
+                            Console.WriteLine($"{GameStateWithRooms.Room.Name} Wystartował ");
+                            GameStateWithRooms.Start();
                         }
 
                         break;
@@ -59,7 +63,7 @@ namespace Server.States
                             newGameRoom.Room.Master = masterSession;
                             //Wyciek pamięci przed zmianą statusu ostatniego gracza trzeba usunąć element z listy
                             //Dać też heart beat jak sypnie to dowidzenia
-                            masterSession.UserGameState = new GameRoomState(masterSession);
+                            masterSession.UserGameState = new GameRoomState(masterSession, newGameRoom);
                             NetworkSessionContainer.NetworkSessions.GameRooms.Add(newGameRoom);
                         }
 

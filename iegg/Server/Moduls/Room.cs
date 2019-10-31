@@ -19,6 +19,7 @@ namespace Server.Moduls
             Name = name;
         }
 
+
         public bool Join(UserSession user)
         {
             if (RoomMember.Count < MaxPlayers)

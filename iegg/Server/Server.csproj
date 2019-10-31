@@ -59,6 +59,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\GameRoomState.cs" />
+    <Compile Include="States\InMatchState.cs" />
     <Compile Include="States\MenuState.cs" />
     <Compile Include="States\PacketSheets\GameOpcodeSheet.cs" />
     <Compile Include="States\IGameState.cs" />

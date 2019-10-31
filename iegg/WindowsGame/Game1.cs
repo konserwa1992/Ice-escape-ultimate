@@ -268,7 +268,7 @@ namespace WindowsGame
                                     JoinRoomPacket joinRoom = new JoinRoomPacket("TEST");
                                     newMSG.Write(JoinRoomPacket.OpCode);
                                     newMSG.Write(joinRoom.RoomName);
-                                    Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
+                                    Client.SendMessage(newMSG, NetDeliveryMethod.ReliableSequenced);
                                     akumulator = 0;
                                 }
                                 else if (opcode == 2620)
@@ -398,7 +398,7 @@ namespace WindowsGame
 
             GraphicsDevice.RasterizerState = rs;
 
-            foreach (ModelMesh mesh in model.Meshes)
+           /* foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
@@ -412,7 +412,7 @@ namespace WindowsGame
                 }
 
                 mesh.Draw();
-            }
+            }*/
 
 
 
