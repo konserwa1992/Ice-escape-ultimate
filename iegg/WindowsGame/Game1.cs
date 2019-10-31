@@ -130,6 +130,7 @@ namespace WindowsGame
                     MessageBox.Show("Collide", "Circle<>Linse", new string[] { "walsiw" });
                 }
             });
+
             player.CollisionObject.OnCollision += new CollideDetected(EventMethod);
             Director.InstanceDirector.Camera.SetDevice(GraphicsDevice);
 
@@ -422,7 +423,7 @@ namespace WindowsGame
                 foreach (PlayerClass otherPl in OtherPlayerList)
                 {
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default);
-                    spriteBatch.DrawString(font, $"Player position {otherPl.NickName}", new Vector2(0, 20 + x), Color.Black);
+                    spriteBatch.DrawString(font, $"Player position {otherPl.ID}", new Vector2(0, 20 + x), Color.Black);
                     spriteBatch.DrawString(font, $"X:  {otherPl.CurrPosition.X.ToString()}", new Vector2(0, 40 + x), Color.Black);
                     spriteBatch.DrawString(font, $"Z:  {otherPl.CurrPosition.Y.ToString()}", new Vector2(0, 60 + x), Color.Black);
                     spriteBatch.DrawString(font, $"interstepAdd:  {otherPl.interstepAdd}", new Vector2(0, 80 + x), Color.Black);

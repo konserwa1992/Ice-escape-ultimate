@@ -17,7 +17,7 @@ namespace NETGame
         public Vector2 StartPosition { get; set; }
         public Vector2 EndPosition { get; set; }
         public float interStep = 0;
-        public float interstepAdd = 0.16666666f;
+        public float interstepAdd = 0.1666666f;
 
         public PlayerClass()
         {

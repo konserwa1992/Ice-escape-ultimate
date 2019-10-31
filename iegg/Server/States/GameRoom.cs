@@ -1,12 +1,17 @@
 ﻿using Engine.GameUtility.Map;
 using Lidgren.Network;
 using multi.Network;
+using Newtonsoft.Json;
 using Server.Moduls;
 using Server.States;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Server
 {
@@ -113,7 +118,10 @@ namespace Server
 
         public Room Room { get; private set; }
         private Stopwatch SendPositionInterval { get; set; } = new Stopwatch();
+        private Stopwatch GameTimeInterval { get; set; } = new Stopwatch();
         public bool Started = false;
+        public Map Map { get; private set; }
+
         public GameRoom(UserSession master, string name, int maxPlayers)
         {
             Room = new Room(name,master);
@@ -133,6 +141,15 @@ namespace Server
                     user.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                 }
             }
+
+            StreamReader MapWriter = new StreamReader("pasta\\Map0.json");
+            Map objectMap = JsonConvert.DeserializeObject<Map>(MapWriter.ReadToEnd(),
+                new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
+            MapWriter.Close();
+
             SendPositionInterval.Start();
             Started = true;
         }
@@ -155,6 +172,18 @@ namespace Server
                     }
                     SendPositionInterval.Reset();
                     SendPositionInterval.Start();
+                }
+
+                if(GameTimeInterval.ElapsedMilliseconds > 16)
+                {
+                    foreach (UserSession spawnPlayer in Room.RoomMember)
+                    {
+                        ((InMatchState)spawnPlayer.UserGameState).Update();
+                        Map.MapPath[0].FloorPolygon.IsCollide(spawnPlayer.CollisionObject);
+                    }
+
+                    GameTimeInterval.Reset();
+                    GameTimeInterval.Start();
                 }
             }
         }

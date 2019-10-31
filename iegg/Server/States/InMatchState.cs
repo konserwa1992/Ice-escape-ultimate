@@ -15,7 +15,7 @@ namespace Server.States
         public UserSession User { get; set; }
         public GameRoom GameRoom { get; set; }
         private float sin = 0.0f;
-
+        
         public InMatchState(UserSession user, GameRoom gameRoom)
         {
             User = user;
@@ -34,7 +34,7 @@ namespace Server.States
                         MovePacket move = new MovePacket();
                         move.X = msg.ReadFloat();
                         move.Y = msg.ReadFloat();
-
+                        User.position = new Vector2(move.X, move.Y);
                         Console.WriteLine($"{User.ID} X:{move.X} Y:{move.Y}");
                         break;
                     }
@@ -50,8 +50,8 @@ namespace Server.States
                 NetOutgoingMessage SendAllPlayersPositionToCurrentSession = User.Connection.Peer.CreateMessage();
                 SendAllPlayersPositionToCurrentSession.Write(MovePacket.OpCode);
                 SendAllPlayersPositionToCurrentSession.Write(otherPlayers.ID);
-                SendAllPlayersPositionToCurrentSession.Write(v.X);
-                SendAllPlayersPositionToCurrentSession.Write(v.Y);
+                SendAllPlayersPositionToCurrentSession.Write(otherPlayers.position.X);
+                SendAllPlayersPositionToCurrentSession.Write(otherPlayers.position.Y);
                 User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
             }

@@ -43,7 +43,6 @@ namespace Engine.GameUtility.Map
             writer.Close();
         }
 
-
         public Map(ContentManager content,GraphicsDevice device)
         {           
             MapLayers.Add(new Layer(terrainWidth, terrainHeight, 0.0f,64,"DefaultGround",content));
