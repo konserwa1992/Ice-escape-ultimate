@@ -33,9 +33,9 @@ namespace Server
             while (true)
             {
                 //Ustawić odświerzanie co 16.666ms
-                foreach (UserSession session in NetworkSessionContainer.NetworkSessions.UserSessions)
+                foreach (GameRoom gameRoom in NetworkSessionContainer.NetworkSessions.GameRooms)
                 {
-                    session.UserGameState.Update();
+                    gameRoom.Update();
                 }
 
                 if ((msg = server.ReadMessage())==null) continue;

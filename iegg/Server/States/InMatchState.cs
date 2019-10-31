@@ -14,13 +14,12 @@ namespace Server.States
     {
         public UserSession User { get; set; }
         public GameRoom GameRoom { get; set; }
-        private Stopwatch SendPositionInterval { get; set; } = new Stopwatch();
         private float sin = 0.0f;
+
         public InMatchState(UserSession user, GameRoom gameRoom)
         {
             User = user;
             GameRoom = gameRoom;
-            SendPositionInterval.Start();
         }
 
         public void Recive(NetIncomingMessage msg)
@@ -60,12 +59,6 @@ namespace Server.States
 
         public void Update()
         {
-            if (SendPositionInterval.ElapsedMilliseconds > 100)
-            {
-                SendMovePacket();
-                SendPositionInterval.Reset();
-                SendPositionInterval.Start();
-            }
         }
     }
 }

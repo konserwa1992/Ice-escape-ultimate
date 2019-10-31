@@ -112,7 +112,8 @@ namespace Server
         #endregion
 
         public Room Room { get; private set; }
-
+        private Stopwatch SendPositionInterval { get; set; } = new Stopwatch();
+        public bool Started = false;
         public GameRoom(UserSession master, string name, int maxPlayers)
         {
             Room = new Room(name,master);
@@ -132,17 +133,30 @@ namespace Server
                     user.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                 }
             }
+            SendPositionInterval.Start();
+            Started = true;
         }
 
 
         public void Recive(NetIncomingMessage msg)
         {
-
+            //Tu będzie można zrobić start Gry jak już wszyscy sie zaladuja 
         }
 
         public void Update()
         {
-
+            if(Started)
+            {
+                if (SendPositionInterval.ElapsedMilliseconds > 100)
+                {
+                    foreach (UserSession spawnPlayer in Room.RoomMember)
+                    {
+                        ((InMatchState)spawnPlayer.UserGameState).SendMovePacket();
+                    }
+                    SendPositionInterval.Reset();
+                    SendPositionInterval.Start();
+                }
+            }
         }
     }
 }
