@@ -19,23 +19,24 @@ namespace UnitTests.Physics
         public void Setup()
         {
             TESTPOLYGON = new Polygon("TESTPOLYGON");
-            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(-5.1318f,0f, 0.79f), Color.Red));
-            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(-1.53182f,0f, 4.00818f), Color.Red));
-            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(4.14091f,0f, 4.02636f), Color.Red));
-            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(3.75909f,0, -1.93727f), Color.Red));
-            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(-4.47727f,0, -3.02818f), Color.Red));
+            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(-4f,0, 4f), Color.Red));
+            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(6,0,2), Color.Red));
+            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(9,0,-2), Color.Red));
+            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(3,0,-2), Color.Red));
+            TESTPOLYGON.AddPoint(new VertexPositionColor(new Vector3(-8,0,1), Color.Red));
             CircleList = new List<Circle>();
-            CircleList.Add(new Circle(new Vector2(-6.05909f, 3.68091f), 1.36f)); // okrąg poza polygonem
-            CircleList.Add(new Circle(new Vector2(-6.11364f, -0.59182f), 2.04f)); // okrąg poza polygonem
-            CircleList.Add(new Circle(new Vector2(-0.13182f, -0.57364f), 1.36f)); // okrąg poza polygonem
-            CircleList.Add(new Circle(new Vector2(1.01364f, 3.75364f), 1.71f)); // okrąg poza polygonem
+            CircleList.Add(new Circle(new Vector2(-4,2), 1.03f));//Pan jest w polygonie
+            CircleList.Add(new Circle(new Vector2(1, 0), 2.06f));//Pan jest poza ale okrag zachacza czyli jest kolizja
+            CircleList.Add(new Circle(new Vector2(-9,4), 0.94f));//Pan jest w polygonie
+
+
 
 
         }
 
 
         [Test]
-        public void Poza()
+        public void InsidePolygon()
         {
 
             Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[0]),false);
@@ -43,27 +44,17 @@ namespace UnitTests.Physics
         }
 
         [Test]
-        public void WAleNazwenatrz()
+        public void OutSideButStillCollideByRadius()
         {
 
             Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[1]), true);
         }
-        [Test]
-        public void WewnatrzWielokata()
-        {
-
-            Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[2]), true);
-        }
-        [Test]
-        public void WewnatrzAlePromienJestPozaWielokatem()
-        {
-            Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[3]), true);
-        }
 
         [Test]
-        public void Test1()
+        //No panowie życie 
+            public void OutSide ()
         {
-            Assert.Pass();
+            Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[2]), false);
         }
     }
 }
