@@ -12,8 +12,12 @@ namespace Engine.GameUtility.Physic
    public class Polygon:ICollider
     {
         List<VertexPositionColor> points = new List<VertexPositionColor>();
+        private VertexPositionColor[] pointsInArray=null;
         public event CollideDetected OnCollision;
         public string Name { get; set; }
+        BasicEffect basicEffect;
+      
+
 
         public Polygon(string name)
         {
@@ -28,6 +32,17 @@ namespace Engine.GameUtility.Physic
             }
         }
 
+        public VertexPositionColor[] PointsFloatArray
+        {
+            get
+            {
+                if (pointsInArray == null)
+                {
+                    pointsInArray = points.ToArray();
+                }
+                return pointsInArray;
+            }
+        }
 
 
         public void AddPoint(VertexPositionColor position)
@@ -68,16 +83,16 @@ namespace Engine.GameUtility.Physic
         {
             if (points.Count() >= 2)
             {
-                BasicEffect basicEffect;
-                basicEffect = new BasicEffect(graphicsDevice);
-                basicEffect.VertexColorEnabled = true;
-                basicEffect.View = Camera.Director.InstanceDirector.Camera.ViewMatrix;
-                basicEffect.Projection = Camera.Director.InstanceDirector.Camera.ProjectionMatrix;
+                if (basicEffect == null)
+                {
+                    basicEffect = new BasicEffect(graphicsDevice);
+                    basicEffect.VertexColorEnabled = true;
+                    basicEffect.View = Camera.Director.InstanceDirector.Camera.ViewMatrix;
+                    basicEffect.Projection = Camera.Director.InstanceDirector.Camera.ProjectionMatrix;
+                }
                 basicEffect.CurrentTechnique.Passes[0].Apply();
-                basicEffect.VertexColorEnabled = true;
-                var rayArray = points.ToArray();
-                graphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, rayArray, 0,
-                    rayArray.Length / 2);
+                graphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineList, PointsFloatArray, 0,
+                PointsFloatArray.Length / 2);
             }
         }
 
@@ -98,7 +113,7 @@ namespace Engine.GameUtility.Physic
             Circle interactionObject = (Circle)collider;
 
             List<VertexPositionColor> filteredPoints = new List<VertexPositionColor>();
-
+            
 
             //Zamiast liczyć wszystko liczymy tylko takie odcinki które mogłyby zakleszczyc sie z punktem(graczem)
             for (int i = 0; i < points.Count; i += 2)
@@ -168,6 +183,7 @@ namespace Engine.GameUtility.Physic
 
                     if (isCollide)
                     {
+                       // this.OnCollision(collider);
                         return true;
                     }
                 }

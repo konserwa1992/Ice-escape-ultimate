@@ -29,12 +29,12 @@ namespace Server.States
         {
             User = user;
             GameRoom = gameRoom;
-            PlayerCollide = new Circle(User.position,10);
-            PlayerCollide.OnCollision+= new CollideDetected(delegate(ICollider item)
+            PlayerCollide = new Circle(ref User.position, 30);
+            PlayerCollide.OnCollision += new CollideDetected(delegate (ICollider item)
                 {
                     int i = 0;
                 }
-                );
+            );
         }
 
         public void Recive(NetIncomingMessage msg)
@@ -74,8 +74,28 @@ namespace Server.States
             }
         }
 
+        public bool CheckIfPlayerIsDead()
+        {
+
+            foreach (IFloor path in GameRoom.Map.MapPath)
+            {
+                if (PlayerCollide.IsCollide(path.FloorPolygon))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+
         public void SendMovePacket()
         {
+
+            CheckIfPlayerIsDead();
             sin += 0.25f;
             Vector2 v = new Vector2(sin * 5, -(float)Math.Cos(sin) * 32);
             foreach (UserSession otherPlayers in GameRoom.Room.RoomMember)
@@ -90,21 +110,8 @@ namespace Server.States
             }
         }
 
-        public bool CheckIfPlayerIsDead()
-        {
-            bool result = false;
-
-            foreach (IFloor path in GameRoom.Map.MapPath)
-            {
-                path.FloorPolygon.IsCollide(PlayerCollide);
-            }
-
-            return true;
-        }
-
         public void Update()
         {
-            CheckIfPlayerIsDead();
             if (DestinationVector != Vector2.Zero)
             {
                 var angle = (int)Math.Floor(MathHelper.ToDegrees((float)Math.Acos(Vector2.Dot(Forward, (Vector2)DestinationVector))));

@@ -51,7 +51,7 @@ namespace Engine.GameUtility
         /// <param name="gameTime"></param>
 		public void Update(GameTime gameTime,Vector3 clickPos)
 		{
-            _controll.Update(gameTime,this,clickPos);
+            _controll.Update(clickPos);
 
 
             if (AliveBoiiii == true)

@@ -194,7 +194,7 @@ namespace EditorEngine
 
                 if (Keyboard.GetState().IsKeyDown(Keys.F1))
                 {
-                    StreamReader MapWriter = new StreamReader("C:\\pasta\\Map0.json");
+                    StreamReader MapWriter = new StreamReader("C:\\pasta\\Maps\\Client\\Map0.json");
                     object objectMap = JsonConvert.DeserializeObject<Map>(MapWriter.ReadToEnd(),
                         new JsonSerializerSettings()
                         {
@@ -210,15 +210,26 @@ namespace EditorEngine
                 {
                    // Map.PutElementOnMap(StandardElements.FinishPoint, new Vector2(positionOnPlane.X, positionOnPlane.Z));
 
-                    if(!File.Exists("C:\\pasta\\Map0.json"))
+                    if(!File.Exists("C:\\pasta\\Maps\\Client\\Map0.json"))
                     {
-                        StreamWriter MapWriter = new StreamWriter("C:\\pasta\\Map0.json",false);
+                        StreamWriter MapWriter = new StreamWriter("C:\\pasta\\Maps\\Client\\Map0.json", false);
                         string jsonSerialize = JsonConvert.SerializeObject(
                         Map,
                         new JsonSerializerSettings()
                         {
                             TypeNameHandling = TypeNameHandling.Objects
                         });
+                        MapWriter.Write(jsonSerialize);
+                        MapWriter.Flush();
+                        MapWriter.Close();
+
+                        MapWriter = new StreamWriter("C:\\pasta\\Maps\\Server\\CollisionStructure0.json", false);
+                        jsonSerialize = JsonConvert.SerializeObject(
+                            Map.MapPath,
+                            new JsonSerializerSettings()
+                            {
+                                TypeNameHandling = TypeNameHandling.Objects
+                            });
                         MapWriter.Write(jsonSerialize);
                         MapWriter.Flush();
                         MapWriter.Close();

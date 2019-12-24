@@ -1,4 +1,4 @@
-﻿using Engine.GameUtility;
+using Engine.GameUtility;
 using Engine.GameUtility.Camera;
 using Engine.GameUtility.Controll.KeyStroke;
 using Engine.GameUtility.Map;
@@ -49,14 +49,14 @@ namespace WindowsGame
         private NetClient Client;
         private List<PlayerClass> OtherPlayerList = new List<PlayerClass>();
         private double akumulator = 0.0f;
-        private string roomName="";
 
 
-        public Game1(string name,string ip, string roomName)
+
+        public Game1(string name, string ip)
         {
             graphics = new GraphicsDeviceManager(this);
             PlayerName = name;
-            this.roomName = roomName;
+
 
 #if ANDROID
             graphics.IsFullScreen = true;
@@ -64,14 +64,14 @@ namespace WindowsGame
             graphics.PreferredBackBufferHeight = 480;
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
 #else
-              graphics.PreferredBackBufferWidth = 800; // remove later
-              graphics.PreferredBackBufferHeight = 600; // remove later
+              graphics.PreferredBackBufferWidth = 1920; // remove later
+              graphics.PreferredBackBufferHeight = 1080; // remove later
 
            // graphics.PreferredBackBufferWidth = 800; // remove later
            // graphics.PreferredBackBufferHeight = 600; // remove later
 
             graphics.PreferredDepthStencilFormat = DepthFormat.Depth24Stencil8;
-         //       graphics.ToggleFullScreen();
+                graphics.ToggleFullScreen();
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             graphics.ApplyChanges();
             IsMouseVisible = true;
@@ -222,15 +222,15 @@ namespace WindowsGame
 
 
 
-         /*   if (akumulator > movePacketInterval && player.PlayerNetInfo != null && player.Forward != player.OldForward)
-            {
-                var newMSG = Client.CreateMessage();
-                newMSG.Write((short)6066);
-                newMSG.Write(player.Forward.X);
-                newMSG.Write(player.Forward.Y);
-                Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
-                akumulator = 0;
-            }*/
+            /*   if (akumulator > movePacketInterval && player.PlayerNetInfo != null && player.Forward != player.OldForward)
+               {
+                   var newMSG = Client.CreateMessage();
+                   newMSG.Write((short)6066);
+                   newMSG.Write(player.Forward.X);
+                   newMSG.Write(player.Forward.Y);
+                   Client.SendMessage(newMSG, NetDeliveryMethod.UnreliableSequenced);
+                   akumulator = 0;
+               }*/
 
 
             /*
@@ -266,7 +266,7 @@ namespace WindowsGame
 
                                     var newMSG = Client.CreateMessage();
 
-                                    JoinRoomPacket joinRoom = new JoinRoomPacket(roomName);
+                                    JoinRoomPacket joinRoom = new JoinRoomPacket("TEST");
                                     newMSG.Write(JoinRoomPacket.OpCode);
                                     newMSG.Write(joinRoom.RoomName);
                                     Client.SendMessage(newMSG, NetDeliveryMethod.ReliableSequenced);
@@ -399,21 +399,21 @@ namespace WindowsGame
 
             GraphicsDevice.RasterizerState = rs;
 
-           /* foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = Matrix.CreateScale(2) * Matrix.CreateTranslation(new Vector3(player.Position.X, 0, player.Position.Y));
-                    effect.View = Director.InstanceDirector.Camera.ViewMatrix;
-                    effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
-                    effect.EnableDefaultLighting();
-                    effect.TextureEnabled = true;
-                    effect.LightingEnabled = true;
-                    effect.VertexColorEnabled = true;
-                }
+            /* foreach (ModelMesh mesh in model.Meshes)
+             {
+                 foreach (BasicEffect effect in mesh.Effects)
+                 {
+                     effect.World = Matrix.CreateScale(2) * Matrix.CreateTranslation(new Vector3(player.Position.X, 0, player.Position.Y));
+                     effect.View = Director.InstanceDirector.Camera.ViewMatrix;
+                     effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
+                     effect.EnableDefaultLighting();
+                     effect.TextureEnabled = true;
+                     effect.LightingEnabled = true;
+                     effect.VertexColorEnabled = true;
+                 }
 
-                mesh.Draw();
-            }*/
+                 mesh.Draw();
+             }*/
 
 
 
@@ -462,7 +462,7 @@ namespace WindowsGame
 
 
 
-            Map.Draw(GraphicsDevice, gameEffect);//Wyciek pamięci
+            Map.Draw(GraphicsDevice, gameEffect);
             LineTEST.Draw(GraphicsDevice, gameEffect);
             base.Draw(gameTime);
         }

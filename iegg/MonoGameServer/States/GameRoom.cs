@@ -130,7 +130,12 @@ namespace Server
 
         public void Start()
         {
-            foreach(UserSession user in Room.RoomMember)
+            StreamReader MapWriter = new StreamReader("pasta\\Map0.json");
+            Map objectMap = Map.LoadMapFromJson(MapWriter.ReadToEnd());
+
+            MapWriter.Close();
+            Map = objectMap;
+            foreach (UserSession user in Room.RoomMember)
             {
                 user.UserGameState = new InMatchState(user,this);
 
@@ -142,12 +147,6 @@ namespace Server
                     user.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                 }
             }
-
-          /* StreamReader MapWriter = new StreamReader("pasta\\Map0.json");
-            Map objectMap = Map.LoadMapFromJson(MapWriter.ReadToEnd());
-
-            MapWriter.Close();*/
-
             SendPositionInterval.Start();
             GameTimeInterval.Start();
             Started = true;

@@ -32,8 +32,8 @@ namespace Engine.GameUtility.Map
         /* public SpawnPoint StartPoint;
          public FinishPoint FinishPoint;*/
 
-        private int terrainWidth = 10;
-        private int terrainHeight = 10;
+        private int terrainWidth = 2;
+        private int terrainHeight = 2;
 
 
         public void SaveMe()
@@ -41,6 +41,16 @@ namespace Engine.GameUtility.Map
             StreamWriter writer = new StreamWriter("Test.json");
             writer.Write(JsonConvert.SerializeObject(this));
             writer.Close();
+        }
+
+        public static Map LoadMapFromJson(string json)
+        {
+            var jsonResult = JsonConvert.DeserializeObject(json).ToString();
+            return JsonConvert.DeserializeObject<Map>(jsonResult,
+                new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
         }
 
         public Map(ContentManager content,GraphicsDevice device)
@@ -206,7 +216,7 @@ namespace Engine.GameUtility.Map
             }
 
            
-            DrawMapElements(graphicsDevice, ef);
+            DrawMapElements(graphicsDevice, ef); //Wyciek prawdopodobnie chodiz o linie kolizji
         }
     }
 }

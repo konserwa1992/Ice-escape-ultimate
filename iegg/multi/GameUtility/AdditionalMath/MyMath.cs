@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Engine.GameUtility.AdditionalMath
 {
-	class MyMath
+	public class MyMath
 	{
 		/// <summary>
 		/// Metoda sprawdzająca po której stronie znajduje sie wektor B względem wektora A

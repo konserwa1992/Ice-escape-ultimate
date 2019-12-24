@@ -75,5 +75,10 @@ namespace Engine.GameUtility.Controll
             _oldButtonPushed = mouse.RightButton;
 
         }
+
+        public void Update(Vector3 planePosition)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -14,5 +14,6 @@ namespace Engine.GameUtility.Control
 		float GroundSpeed { get; set; }
 		int SideMultiplier { set; get; }
         void Update(GameTime time, Player player, Vector3 planePosition);
-	}
+	    void Update(Vector3 planePosition);
+    }
 }

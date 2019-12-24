@@ -71,7 +71,9 @@ namespace Server
                                         IntPtr ptr = **(IntPtr**) (&tr);
                                         Console.WriteLine(ptr);
                                         session.Connection = msg.SenderConnection;
-                                        session.ID = ptr.ToInt32();
+                                        Random randID = new Random();
+                                        session.ID = randID.Next(1000000); //martwić sie tym będe później
+                                        //session.ID = ptr.ToInt32();
                                         session.Name = msg.ReadString();
 
                                         NetOutgoingMessage outMessage = session.Connection.Peer.CreateMessage();
