@@ -38,7 +38,7 @@ namespace Server.States
                             //Poinformowanie uzytkownika o nie odnaleźieniu pokoju
                         }
 
-                        if(GameStateWithRooms.Room.RoomMember.Count==2)
+                        if(GameStateWithRooms.Room.RoomMembers.Count==2)
                         {
                             Console.WriteLine($"{GameStateWithRooms.Room.Name} Wystartował ");
                             GameStateWithRooms.Start();
@@ -53,7 +53,7 @@ namespace Server.States
                         msg.ReadAllProperties(newRoom);
 
                         if (!NetworkSessionContainer.NetworkSessions.GameRooms.Any(x =>
-                            x.Room.RoomMember.Exists(y => y.Connection == msg.SenderConnection) == true))
+                            x.Room.RoomMembers.Exists(y => y.Connection == msg.SenderConnection) == true))
                         {
                             UserSession masterSession =
                                 NetworkSessionContainer.NetworkSessions.UserSessions.FirstOrDefault(x =>

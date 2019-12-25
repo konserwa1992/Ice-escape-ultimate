@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.GameUtility.Map.Elements;
+using Microsoft.Xna.Framework;
 
 namespace Engine.GameUtility.Physic
 {

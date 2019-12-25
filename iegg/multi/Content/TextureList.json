@@ -2,5 +2,6 @@
   "DefaultIce": "Maps\\DefaultIce",
   "Snow": "Maps\\Snow",
   "Spawn": "MapElements\\SpawnPoint",
-  "Finish":  "MapElements\\FinishPoint"
+  "Resurrect": "MapElements\\SpawnPoint",
+  "Finish": "MapElements\\FinishPoint"
 }

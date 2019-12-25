@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace multi.Network
 {
-    class RoomInfo
+    class RoomInfoPacket
     {
         public int RoomID;
         public string Name;

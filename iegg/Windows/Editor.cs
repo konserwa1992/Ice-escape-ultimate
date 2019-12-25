@@ -250,7 +250,18 @@ namespace EditorEngine
                 }
 
                 StandFloorDebug = Map.UpdatePlayerMovmentType(player);
-                collision = Map.MapPath[0].FloorPolygon.IsCollide(player.CollisionObject);
+                //collision = Map.MapPath[0].FloorPolygon.IsCollide(player.CollisionObject);
+
+                if (mouse.LeftButton == ButtonState.Pressed && !objectInspector.Desktop.IsMouseOverGUI)
+                {
+                    /* IMapElement el = Map.GetMapElementByName<IMapElement>(objectInspector.selectedID);
+                     if (el != null && el.GetType() != typeof(SpawnPoint) )
+                         (el as Gun).SetLookingDirection(positionOnPlane);*/
+
+                    Circle circle = new Circle(new Vector2(positionOnPlane.X, positionOnPlane.Z), 30);
+
+                    collision = Map.MapPath[0].FloorPolygon.IsCollide(player.CollisionObject);
+                }
                 player.Update(gameTime, positionOnPlane);
             }
 

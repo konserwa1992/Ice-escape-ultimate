@@ -19,6 +19,7 @@ namespace Server
         public string Name;
         public Vector2 position;
         public ICollider CollisionObject { get; set; }
+        public bool Alive { get; set; } = true;
 
         public UserSession()
         {

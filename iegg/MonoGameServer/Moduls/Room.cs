@@ -8,7 +8,7 @@ namespace Server.Moduls
 {
     public class Room
     {
-        public List<UserSession> RoomMember = new List<UserSession>();
+        public List<UserSession> RoomMembers = new List<UserSession>();
         public UserSession Master;
         public string Name;
         public int MaxPlayers = 8;
@@ -22,9 +22,9 @@ namespace Server.Moduls
 
         public bool Join(UserSession user)
         {
-            if (RoomMember.Count < MaxPlayers)
+            if (RoomMembers.Count < MaxPlayers)
             {
-                RoomMember.Add(user);
+                RoomMembers.Add(user);
                 return true;
             }
             return false;
@@ -32,7 +32,7 @@ namespace Server.Moduls
 
         public void Remove(UserSession user)
         {
-            RoomMember.Remove(user);
+            RoomMembers.Remove(user);
         }
     }
 }

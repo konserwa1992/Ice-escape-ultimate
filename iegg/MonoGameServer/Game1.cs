@@ -219,9 +219,9 @@ namespace MonoGameServer
             {
                 spriteBatch.DrawString(font, $"Room name {room.Room.Name}", new Vector2(0,Y), Color.Black);
                 Y += 12;
-                foreach (UserSession session in room.Room.RoomMember)
+                foreach (UserSession session in room.Room.RoomMembers)
                 {
-                    spriteBatch.DrawString(font, $"Nazwa Gracza {session.Name} Pozycja {session.position}", new Vector2(0, Y), Color.Black);
+                    spriteBatch.DrawString(font, $"Nazwa Gracza {session.Name} {session.Alive} Pozycja {session.position}", new Vector2(0, Y), Color.Black);
                     Y += 12;
                 }
             }

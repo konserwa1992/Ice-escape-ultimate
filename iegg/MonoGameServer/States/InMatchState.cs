@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Engine.GameUtility.Map.Elements.FloorType;
 using Engine.GameUtility.Physic;
 using Lidgren.Network;
+using multi.Network;
 using Microsoft.Xna.Framework;
 using NETGame;
 
@@ -22,14 +23,19 @@ namespace Server.States
         private Vector2 Forward = new Vector2(1, 0);
         private int SideMultiplier = 0;
         private Vector2 ClickPosition;
-        public ICollider PlayerCollide;
+        public Circle PlayerCollide;
         private float prev { get; set; }
+
+
+
+        //Usunać bo potem bedzie stały ląd
+        private bool PlayerIsReady = false;
 
         public InMatchState(UserSession user, GameRoom gameRoom)
         {
             User = user;
             GameRoom = gameRoom;
-            PlayerCollide = new Circle(ref User.position, 30);
+            PlayerCollide = new Circle(User.position, 5);
             PlayerCollide.OnCollision += new CollideDetected(delegate (ICollider item)
                 {
                     int i = 0;
@@ -67,6 +73,7 @@ namespace Server.States
                             SideMultiplier = 1;
                         }
 
+                        PlayerIsReady = true;
 
                         Console.WriteLine($"{User.ID} X:{move.X} Y:{move.Y}");
                         break;
@@ -76,15 +83,17 @@ namespace Server.States
 
         public bool CheckIfPlayerIsDead()
         {
-
             foreach (IFloor path in GameRoom.Map.MapPath)
             {
-                if (PlayerCollide.IsCollide(path.FloorPolygon))
+                if (path.FloorPolygon.IsCollide(PlayerCollide))
                 {
+                    User.Alive = false;
+                    SendDeathPacket();
                     return true;
                 }
-                else
+                else if (User.Alive != false)
                 {
+                    User.Alive = true;
                     return false;
                 }
             }
@@ -95,23 +104,52 @@ namespace Server.States
         public void SendMovePacket()
         {
 
-            CheckIfPlayerIsDead();
-            sin += 0.25f;
-            Vector2 v = new Vector2(sin * 5, -(float)Math.Cos(sin) * 32);
-            foreach (UserSession otherPlayers in GameRoom.Room.RoomMember)
+                sin += 0.25f;
+                Vector2 v = new Vector2(sin * 5, -(float) Math.Cos(sin) * 32);
+                foreach (UserSession player in GameRoom.Room.RoomMembers)
+                {
+                    NetOutgoingMessage SendAllPlayersPositionToCurrentSession = User.Connection.Peer.CreateMessage();
+                    SendAllPlayersPositionToCurrentSession.Write(MovePacket.OpCode);
+                    SendAllPlayersPositionToCurrentSession.Write(player.ID);
+                    SendAllPlayersPositionToCurrentSession.Write(player.position.X);
+                    SendAllPlayersPositionToCurrentSession.Write(player.position.Y);
+                    User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
+                        NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
+                    //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
+                }
+        }
+
+        public void TestIfPlayerIsRespawned()
+        {
+            foreach (UserSession player in GameRoom.Room.RoomMembers)
+            {
+                if (((InMatchState) player.UserGameState).PlayerCollide.IsCollide(this.PlayerCollide))
+                {
+                    User.Alive = true;
+                    PlayerIsReady = true;
+                }
+            }
+        }
+
+
+        public void SendDeathPacket()
+        {
+            foreach (UserSession player in GameRoom.Room.RoomMembers)
             {
                 NetOutgoingMessage SendAllPlayersPositionToCurrentSession = User.Connection.Peer.CreateMessage();
-                SendAllPlayersPositionToCurrentSession.Write(MovePacket.OpCode);
-                SendAllPlayersPositionToCurrentSession.Write(otherPlayers.ID);
-                SendAllPlayersPositionToCurrentSession.Write(otherPlayers.position.X);
-                SendAllPlayersPositionToCurrentSession.Write(otherPlayers.position.Y);
-                User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession, NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
-               //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
+                SendAllPlayersPositionToCurrentSession.Write(ResurrectPointAddPacket.OpCode);
+                SendAllPlayersPositionToCurrentSession.Write(player.ID);
+                SendAllPlayersPositionToCurrentSession.Write(player.position.X);
+                SendAllPlayersPositionToCurrentSession.Write(player.position.Y);
+                User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
+                    NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
+                //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
             }
         }
 
         public void Update()
         {
+            PlayerCollide.UpdatePosition(User.position);
             if (DestinationVector != Vector2.Zero)
             {
                 var angle = (int)Math.Floor(MathHelper.ToDegrees((float)Math.Acos(Vector2.Dot(Forward, (Vector2)DestinationVector))));
@@ -131,7 +169,17 @@ namespace Server.States
                     DestinationVector = Vector2.Zero;
                 }
             }
-            User.position += this.Forward * 1.6f * 1;
+
+
+            if (User.Alive == true && PlayerIsReady == true)
+            {
+                CheckIfPlayerIsDead();
+                User.position += this.Forward * 1.6f * 1;
+            }
+            else
+            {
+                TestIfPlayerIsRespawned();
+            }
         }
     }
 }

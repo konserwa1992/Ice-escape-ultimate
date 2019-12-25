@@ -21,11 +21,10 @@ namespace Engine.GameUtility.Physic
             Position = position;
             Radius = radius;
         }
-
-        public Circle(ref Vector2 position, float radius)
+        
+        public void UpdatePosition(Vector2 position)
         {
             Position = position;
-            Radius = radius;
         }
 
         private bool PolygonCollision(ICollider collider)

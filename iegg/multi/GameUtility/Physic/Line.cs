@@ -61,7 +61,7 @@ namespace Engine.GameUtility.Physic
 
 
 
-            if (new Point(Point1).IsCollide(Collider) &&
+            if (new Point(Point1).IsCollide(Collider) ||
                 new Point(Point2).IsCollide(Collider))
                 return true;
 
@@ -101,5 +101,6 @@ namespace Engine.GameUtility.Physic
         {
             throw new NotImplementedException();
         }
+
     }
 }

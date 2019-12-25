@@ -7,6 +7,7 @@ using Lidgren.Network;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using multi.GameUtility.Map.Elements;
 using multi.Network;
 using NETGame;
 using Newtonsoft.Json;
@@ -288,6 +289,19 @@ namespace WindowsGame
                                         player2Move.StartPosition = player2Move.EndPosition;
                                         player2Move.EndPosition = new Vector2(movePacket.X, movePacket.Y);
                                         player2Move.interStep = 0;
+                                    }
+                                }
+                                else if (opcode == ResurrectPointAddPacket.OpCode)
+                                {
+                                    ResurrectPointAddPacket resurrectPlayerPoint = new ResurrectPointAddPacket();
+                                    message.ReadAllProperties(resurrectPlayerPoint);
+                                    PlayerClass player= OtherPlayerList.FirstOrDefault(x => x.ID == resurrectPlayerPoint.ID);
+                                    if (player != null)
+                                    {
+                                        ResurrectPoint ressurectPoint = new ResurrectPoint("Resurrect");
+                                        ressurectPoint.Position = new Vector2(resurrectPlayerPoint.X, resurrectPlayerPoint.Y);
+                                        //Tu też będzie sie ustawiało kolor żeby gracz wiedział o kogo chodzi poza tym kto sie będzie respawnił po najechaniu na pole decydować bedzie serwer(oczywiście respawnić będzie legitnego człowieka)
+                                        Map.MapElements.Add(ressurectPoint);
                                     }
                                 }
 

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace NETGame
 {
-
+    /// <summary>
+    /// ROZIWĄZANIE CHWILOWE...
+    /// Pozostałość należy porpawić nie może być to zrobione w taki sposób
+    /// Zadużo obiektów korzysta z tej klasy i niekoniecznie tak jak powinny między innymi serwer może mieć nieco inna
+    /// klase jak klient.
+    /// </summary>
     public class PlayerClass
     {
         public int ID { get; set; }
@@ -18,6 +23,9 @@ namespace NETGame
         public Vector2 EndPosition { get; set; }
         public float interStep = 0;
         public float interstepAdd = 0.1666666f;
+
+        //To już ogólnie wywalić bo śmieć
+        //public bool isAlive { get; set; } = true;
 
         public PlayerClass()
         {

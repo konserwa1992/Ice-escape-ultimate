@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Engine.GameUtility.Map.Elements;
 using Engine.GameUtility.Map.Elements.FloorType;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -135,12 +136,14 @@ namespace Server
 
             MapWriter.Close();
             Map = objectMap;
-            foreach (UserSession user in Room.RoomMember)
+            foreach (UserSession user in Room.RoomMembers)
             {
                 user.UserGameState = new InMatchState(user,this);
 
-                foreach(UserSession spawnPlayer in Room.RoomMember)
+                foreach(UserSession spawnPlayer in Room.RoomMembers)
                 {
+                    IMapElement sp = objectMap.GetMapElementByName<IMapElement>("sp");
+                    spawnPlayer.position = sp.Position;
                     NetOutgoingMessage SendAllPlayersPositionToCurrentSession = user.Connection.Peer.CreateMessage();
                     SendAllPlayersPositionToCurrentSession.Write(SpawnPacket.OpCode);
                     SendAllPlayersPositionToCurrentSession.Write(spawnPlayer.ID);
@@ -170,7 +173,7 @@ namespace Server
             {
                 if (SendPositionInterval.ElapsedMilliseconds > 100)
                 {
-                    foreach (UserSession spawnPlayer in Room.RoomMember)
+                    foreach (UserSession spawnPlayer in Room.RoomMembers)
                     {
                         ((InMatchState)spawnPlayer.UserGameState).SendMovePacket();
                     }
@@ -180,7 +183,7 @@ namespace Server
 
                 if(GameTimeInterval.ElapsedMilliseconds > 16)
                 {
-                    foreach (UserSession spawnPlayer in Room.RoomMember)
+                    foreach (UserSession spawnPlayer in Room.RoomMembers)
                     {
                         ((InMatchState)spawnPlayer.UserGameState).Update();
                        // Map.MapPath[0].FloorPolygon.IsCollide(spawnPlayer.CollisionObject);
