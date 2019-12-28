@@ -69,6 +69,7 @@
     <Compile Include="GameUtility\Map\Elements\FloorType\IFloor.cs" />
     <Compile Include="GameUtility\Map\Elements\FloorType\RegularIce.cs" />
     <Compile Include="GameUtility\Map\Elements\ResurrectPoint.cs" />
+    <Compile Include="Network\RevivedPlayerPacket.cs" />
     <Compile Include="Network\ResurrectPointAddPacket.cs" />
     <Compile Include="Network\RoomStartGamePacket.cs" />
     <Compile Include="Network\CreateRoomPacket.cs" />

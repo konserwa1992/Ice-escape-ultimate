@@ -12,6 +12,7 @@ namespace UnitTests.Physics
     {
         private Polygon TESTPOLYGON;
         private Circle TESTCIRCLE;
+        private Circle MainCircleToTest = new Circle(new Vector2(-5,4),5);
         private Line TESTLINE;
         private List<Circle> CircleList;
 
@@ -67,6 +68,27 @@ namespace UnitTests.Physics
         public void OutSide2()
         {
             Assert.AreEqual(TESTPOLYGON.IsCollide(CircleList[4]), false);
+        }
+
+        [Test]
+        public void CircleCollisionNoCollision()
+        {
+            TESTCIRCLE = new Circle(new Vector2(2,-1), 2);
+            Assert.AreEqual(TESTCIRCLE.IsCollide(MainCircleToTest), false);
+        }
+
+        [Test]
+        public void CircleCollisionTouch()
+        {
+            TESTCIRCLE = new Circle(new Vector2(2, 4), 2);
+            Assert.AreEqual(TESTCIRCLE.IsCollide(MainCircleToTest), true);
+        }
+
+        [Test]
+        public void CircleCollision()
+        {
+            TESTCIRCLE = new Circle(new Vector2(-2, 5), 2);
+            Assert.AreEqual(TESTCIRCLE.IsCollide(MainCircleToTest), true);
         }
     }
 }

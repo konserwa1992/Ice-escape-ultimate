@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Engine.GameUtility.Physic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,8 @@ namespace Engine.GameUtility.Map.Elements
         public float Scale { get; set; } = 8.0f;
         public bool Hidden { get; set; } = true;
 
+
+        public ICollider Collider {get;private set;}
         //Effect effect;
 
         public SpawnPoint(string name)
@@ -52,6 +55,8 @@ namespace Engine.GameUtility.Map.Elements
 
         public void Load()
         {
+            Collider = new Circle(Position,32);
+
             vertexCollection = new VertexPosTexNormal[6];
 
             VertexPosTexNormal singleVertex = new VertexPosTexNormal(new Vector3(-1, 0, -1),new Vector2(0, 0), new Vector3(0,1,0));

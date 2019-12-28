@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Engine.GameUtility.Map.Elements;
 
 namespace WindowsGame
 {
@@ -277,6 +278,7 @@ namespace WindowsGame
                                 {
                                     PlayerClass playerTemp = new PlayerClass();
                                     message.ReadAllProperties(playerTemp);
+                                   // playerTemp.isAlive = true;
                                     OtherPlayerList.Add(playerTemp);
                                 }
                                 else if (opcode == 6066)
@@ -296,15 +298,27 @@ namespace WindowsGame
                                     ResurrectPointAddPacket resurrectPlayerPoint = new ResurrectPointAddPacket();
                                     message.ReadAllProperties(resurrectPlayerPoint);
                                     PlayerClass player= OtherPlayerList.FirstOrDefault(x => x.ID == resurrectPlayerPoint.ID);
+                                 //   player.isAlive = false;
                                     if (player != null)
                                     {
-                                        ResurrectPoint ressurectPoint = new ResurrectPoint("Resurrect");
+                                        ResurrectPoint ressurectPoint = new ResurrectPoint("ResurrectID"+ player.ID);
                                         ressurectPoint.Position = new Vector2(resurrectPlayerPoint.X, resurrectPlayerPoint.Y);
                                         //Tu też będzie sie ustawiało kolor żeby gracz wiedział o kogo chodzi poza tym kto sie będzie respawnił po najechaniu na pole decydować bedzie serwer(oczywiście respawnić będzie legitnego człowieka)
                                         Map.MapElements.Add(ressurectPoint);
                                     }
+                                }else if (opcode == RevivedPlayerPacket.OpCode)
+                                {
+                                    RevivedPlayerPacket revivedPlayer = new RevivedPlayerPacket();
+                                    message.ReadAllProperties(revivedPlayer);
+                                    PlayerClass player = OtherPlayerList.FirstOrDefault(x => x.ID == revivedPlayer.ID);
+                                   // player.isAlive = true;
+                                    ResurrectPoint revivePoint =
+                                        (ResurrectPoint)Map.GetMapElementByName<IMapElement>("ResurrectID" + player.ID);
+                                    if (revivePoint != null)
+                                    {
+                                        Map.MapElements.Remove(revivePoint);
+                                    }
                                 }
-
                             }
                             break;
                         }
@@ -436,27 +450,39 @@ namespace WindowsGame
                 int x = 1;
                 foreach (PlayerClass otherPl in OtherPlayerList)
                 {
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default);
-                    spriteBatch.DrawString(font, $"Player position {otherPl.ID}", new Vector2(0, 20 + x), Color.Black);
-                    spriteBatch.DrawString(font, $"X:  {otherPl.CurrPosition.X.ToString()}", new Vector2(0, 40 + x), Color.Black);
-                    spriteBatch.DrawString(font, $"Z:  {otherPl.CurrPosition.Y.ToString()}", new Vector2(0, 60 + x), Color.Black);
-                    spriteBatch.DrawString(font, $"interstepAdd:  {otherPl.interstepAdd}", new Vector2(0, 80 + x), Color.Black);
-                    spriteBatch.DrawString(font, $"SendMovePacketInterval:  {movePacketInterval}", new Vector2(0, 90 + x), Color.Black);
-                    spriteBatch.End();
-                    x += 90;
-                    foreach (ModelMesh mesh in model.Meshes)
+                 //   if (otherPl.isAlive == true)
                     {
-                        foreach (BasicEffect effect in mesh.Effects)
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap,
+                            DepthStencilState.Default);
+                        spriteBatch.DrawString(font, $"Player position {otherPl.ID}", new Vector2(0, 20 + x),
+                            Color.Black);
+                        spriteBatch.DrawString(font, $"X:  {otherPl.CurrPosition.X.ToString()}", new Vector2(0, 40 + x),
+                            Color.Black);
+                        spriteBatch.DrawString(font, $"Z:  {otherPl.CurrPosition.Y.ToString()}", new Vector2(0, 60 + x),
+                            Color.Black);
+                        spriteBatch.DrawString(font, $"interstepAdd:  {otherPl.interstepAdd}", new Vector2(0, 80 + x),
+                            Color.Black);
+                        spriteBatch.DrawString(font, $"SendMovePacketInterval:  {movePacketInterval}",
+                            new Vector2(0, 90 + x), Color.Black);
+                        spriteBatch.End();
+                        x += 90;
+                        foreach (ModelMesh mesh in model.Meshes)
                         {
-                            effect.World = Matrix.CreateScale(2) * Matrix.CreateTranslation(new Vector3(otherPl.CurrPosition.X, 0, otherPl.CurrPosition.Y));
-                            effect.View = Director.InstanceDirector.Camera.ViewMatrix;
-                            effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
-                            effect.EnableDefaultLighting();
-                            effect.LightingEnabled = true;
-                            effect.TextureEnabled = false;
-                            effect.VertexColorEnabled = true;
+                            foreach (BasicEffect effect in mesh.Effects)
+                            {
+                                effect.World = Matrix.CreateScale(2) *
+                                               Matrix.CreateTranslation(new Vector3(otherPl.CurrPosition.X, 0,
+                                                   otherPl.CurrPosition.Y));
+                                effect.View = Director.InstanceDirector.Camera.ViewMatrix;
+                                effect.Projection = Director.InstanceDirector.Camera.ProjectionMatrix;
+                                effect.EnableDefaultLighting();
+                                effect.LightingEnabled = true;
+                                effect.TextureEnabled = false;
+                                effect.VertexColorEnabled = true;
+                            }
+
+                            mesh.Draw();
                         }
-                        mesh.Draw();
                     }
                 }
             }

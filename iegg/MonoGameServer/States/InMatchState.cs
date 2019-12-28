@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Engine.GameUtility.Map.Elements;
 using Engine.GameUtility.Map.Elements.FloorType;
 using Engine.GameUtility.Physic;
 using Lidgren.Network;
@@ -106,13 +107,13 @@ namespace Server.States
 
                 sin += 0.25f;
                 Vector2 v = new Vector2(sin * 5, -(float) Math.Cos(sin) * 32);
-                foreach (UserSession player in GameRoom.Room.RoomMembers)
+                foreach (UserSession playerInRoom in GameRoom.Room.RoomMembers)
                 {
                     NetOutgoingMessage SendAllPlayersPositionToCurrentSession = User.Connection.Peer.CreateMessage();
                     SendAllPlayersPositionToCurrentSession.Write(MovePacket.OpCode);
-                    SendAllPlayersPositionToCurrentSession.Write(player.ID);
-                    SendAllPlayersPositionToCurrentSession.Write(player.position.X);
-                    SendAllPlayersPositionToCurrentSession.Write(player.position.Y);
+                    SendAllPlayersPositionToCurrentSession.Write(playerInRoom.ID);
+                    SendAllPlayersPositionToCurrentSession.Write(playerInRoom.position.X);
+                    SendAllPlayersPositionToCurrentSession.Write(playerInRoom.position.Y);
                     User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
                         NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                     //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
@@ -123,25 +124,45 @@ namespace Server.States
         {
             foreach (UserSession player in GameRoom.Room.RoomMembers)
             {
-                if (((InMatchState) player.UserGameState).PlayerCollide.IsCollide(this.PlayerCollide))
+                if (player != this.User)
                 {
-                    User.Alive = true;
-                    PlayerIsReady = true;
+                    if (((InMatchState) player.UserGameState).PlayerCollide.IsCollide(this.PlayerCollide) &&
+                        player.Alive == true)
+                    {
+                        User.Alive = true;
+                        SpawnPoint sp = (SpawnPoint)GameRoom.Map.GetMapElementByName<IMapElement>("sp");
+                        
+                        this.User.position = sp.Position;
+                        this.PlayerIsReady = false;
+                        SendRevivePacket();
+                    }
                 }
             }
         }
 
+        public void SendRevivePacket()
+        {
+            foreach (UserSession playerInRoom in GameRoom.Room.RoomMembers)
+            {
+                NetOutgoingMessage SendAllPlayersPositionToCurrentSession = playerInRoom.Connection.Peer.CreateMessage();
+                SendAllPlayersPositionToCurrentSession.Write(RevivedPlayerPacket.OpCode);
+                SendAllPlayersPositionToCurrentSession.Write(this.User.ID);
+                playerInRoom.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
+                    NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
+                //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
+            }
+        }
 
         public void SendDeathPacket()
         {
-            foreach (UserSession player in GameRoom.Room.RoomMembers)
+            foreach (UserSession playerInRoom in GameRoom.Room.RoomMembers)
             {
-                NetOutgoingMessage SendAllPlayersPositionToCurrentSession = User.Connection.Peer.CreateMessage();
+                NetOutgoingMessage SendAllPlayersPositionToCurrentSession = playerInRoom.Connection.Peer.CreateMessage();
                 SendAllPlayersPositionToCurrentSession.Write(ResurrectPointAddPacket.OpCode);
-                SendAllPlayersPositionToCurrentSession.Write(player.ID);
-                SendAllPlayersPositionToCurrentSession.Write(player.position.X);
-                SendAllPlayersPositionToCurrentSession.Write(player.position.Y);
-                User.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
+                SendAllPlayersPositionToCurrentSession.Write(this.User.ID);
+                SendAllPlayersPositionToCurrentSession.Write(this.User.position.X);
+                SendAllPlayersPositionToCurrentSession.Write(this.User.position.Y);
+                playerInRoom.Connection.SendMessage(SendAllPlayersPositionToCurrentSession,
                     NetDeliveryMethod.UnreliableSequenced, SendAllPlayersPositionToCurrentSession.LengthBytes);
                 //Console.WriteLine($"ID:{User.ID} UPDATE_USER_ID:{otherPlayers.ID}");
             }

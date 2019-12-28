@@ -39,23 +39,59 @@ namespace Engine.GameUtility.Physic
             Line line = (Line) collider;
             bool collision = line.IsCollide(this);
 
-            if (collision)
+            return collision;
+        }
+
+        private bool CircleCollision(ICollider collider)
+        {
+            Circle circleCollider = (Circle) collider;
+            float distanceBettwen = (float)Math.Sqrt(
+            ((Position.X - circleCollider.Position.X) * (Position.X - circleCollider.Position.X))
+            +((Position.Y - circleCollider.Position.Y) * (Position.Y - circleCollider.Position.Y))
+                );
+            bool collision = false;
+
+            if (distanceBettwen <= this.Radius + circleCollider.Radius)
             {
-                this.OnCollision(collider);
+                collision = true;
             }
 
             return collision;
         }
 
+
+        /// <summary>
+        /// Dopisać testy jednostkowe
+        /// </summary>
+        /// <param name="collider"></param>
+        /// <returns></returns>
         public bool IsCollide(ICollider collider)
         {
-            YouHaveCollidetWith(collider);
-            return false;
+            bool isCollide = false;
+            if (typeof(Circle) == collider.GetType())
+            {
+                isCollide=CircleCollision(collider);
+            }
+            else if(typeof(Line) == collider.GetType())
+            {
+                isCollide = LineCollision(collider);
+            }
+            else if (typeof(Polygon) == collider.GetType())
+            {
+                isCollide = PolygonCollision(collider);
+            }
+
+            if (isCollide == true &&  OnCollision != null)
+            {
+                OnCollision(collider);
+            }
+            
+            return isCollide;
         }
 
         public ICollider YouHaveCollidetWith(ICollider collider)
         {
-            OnCollision(collider);
+            
             return collider;
         }
     }
